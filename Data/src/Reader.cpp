@@ -17,3 +17,27 @@ const std::string& Reader::GetLabyrinthFileName() const {
 void Reader::SetPath(const std::string& labyrinthFileName) {
     _labyrinthFile = labyrinthFileName;
 }
+
+char Reader::GetPlayerSymbol() const {
+    return _playerSymbol;
+}
+
+char Reader::GetExitSymbol() const {
+    return _exitSymbol;
+}
+
+char Reader::GetWallSymbol() const {
+    return _wallSymbol;
+}
+
+void Reader::SetPlayerSymbol(char playerSymbol) {
+    _playerSymbol = playerSymbol;
+}
+
+void Reader::SetExitSymbol(char exitSymbol) {
+    _exitSymbol = exitSymbol;
+}
+
+void Reader::SetWallSymbol(char wallSymbol) {
+    _wallSymbol = wallSymbol;
+}

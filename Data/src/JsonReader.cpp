@@ -10,10 +10,10 @@
 using json = nlohmann::json;
 
 JsonReader::JsonReader(const char* filename) : Reader(filename) {
-    ReadPathFromFile();
+    ReadConfigContentFromFile();
 }
 
-void JsonReader::ReadPathFromFile() {
+void JsonReader::ReadConfigContentFromFile() {
     std::ifstream f(GetConfigFileName());
 
     if (!f.is_open()) {
@@ -23,6 +23,9 @@ void JsonReader::ReadPathFromFile() {
     json data = json::parse(f);
 
     SetPath(data.at("path"));
+    SetExitSymbol(((std::string)data.at("exit_symbol")).at(0));
+    SetPlayerSymbol(((std::string)data.at("player_symbol")).at(0));
+    SetWallSymbol(((std::string)data.at("wall_symbol")).at(0));
 
     f.close();
 }

@@ -3,7 +3,9 @@ project(PathfindingAlgorithmsComparison)
 
 set(CMAKE_CXX_STANDARD 23)
 
+
 include(FetchContent)
+
 
 FetchContent_Declare(
         nlohmann_json
@@ -11,9 +13,46 @@ FetchContent_Declare(
         GIT_TAG v3.10.4  # Replace this with the version/tag you want to use
 )
 
+
 FetchContent_MakeAvailable(nlohmann_json)
 
-include_directories(Data)
 
-add_executable(PathfindingAlgorithmsComparison main.cpp Data/include/Board.h Data/src/Board.cpp Data/include/JsonReader.h Data/src/JsonReader.cpp Data/include/Reader.h Data/src/Reader.cpp)
-target_link_libraries(PathfindingAlgorithmsComparison PRIVATE nlohmann_json::nlohmann_json)
+FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/archive/refs/heads/master.zip
+)
+
+
+FetchContent_MakeAvailable(googletest)
+
+
+include_directories(Data Logic)
+
+
+add_library(PathfindingAlgorithmsComparisonLib STATIC
+        Data/include/Board.h Data/src/Board.cpp
+        Data/include/JsonReader.h Data/src/JsonReader.cpp
+        Data/include/Reader.h Data/src/Reader.cpp
+        Data/include/Player.h Data/src/Player.cpp
+        Data/include/Direction.h Logic/src/Algorithm.cpp
+        Logic/include/Algorithm.h
+        Data/src/BoardInteractiveSymbol.cpp Data/include/BoardInteractiveSymbol.h
+        Data/include/DataManager.cpp Data/include/DataManager.h
+        )
+
+
+target_link_libraries(PathfindingAlgorithmsComparisonLib PRIVATE nlohmann_json::nlohmann_json)
+
+
+# Main executable links to the library
+add_executable(PathfindingAlgorithmsComparison main.cpp)
+target_link_libraries(PathfindingAlgorithmsComparison PRIVATE PathfindingAlgorithmsComparisonLib)
+
+
+# Add the "test" directory to the include directories to find test headers
+include_directories(${CMAKE_SOURCE_DIR}/TestDir)
+
+
+# Add the test executable and link it with the GTest library and your project's source files
+add_executable(RunTests TestDir/Test.cpp)
+target_link_libraries(RunTests PRIVATE PathfindingAlgorithmsComparisonLib gtest gtest_main)

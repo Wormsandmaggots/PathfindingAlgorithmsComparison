@@ -9,9 +9,9 @@
 class JsonReader : public Reader {
 public:
     explicit JsonReader(const char* filename);
-    virtual ~JsonReader() = default;
+    ~JsonReader() override = default;
 
-    void ReadPathFromFile() override;
+    void ReadConfigContentFromFile() override;
     std::vector<std::string> ReadBoardFromLabyrinthPath() override;
 };
 

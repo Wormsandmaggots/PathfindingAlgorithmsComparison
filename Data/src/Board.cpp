@@ -6,9 +6,7 @@
 
 #include <sstream>
 
-Board::Board(Reader& reader) : _reader(reader) {
-    _board = _reader.ReadBoardFromLabyrinthPath();
-}
+Board::Board(std::vector<std::string>& board) : _board(board) {}
 
 const std::vector<std::string>& Board::GetBoard() const {
     return _board;

@@ -8,7 +8,7 @@
 
 class Board {
 public:
-    explicit Board(Reader& reader);
+    Board(std::vector<std::string>& board);
     ~Board() = default;
 
     std::string ToString() const;
@@ -16,7 +16,6 @@ public:
 
 private:
     std::vector<std::string> _board;
-    Reader& _reader;
 };
 
 
