@@ -30,17 +30,17 @@ void JsonReader::ReadConfigContentFromFile() {
     f.close();
 }
 
-std::vector<std::string> JsonReader::ReadBoardFromLabyrinthPath() {
-    std::vector<std::string> board;
+std::vector<std::string>& JsonReader::ReadBoardFromLabyrinthPath() {
+    std::vector<std::string>* board = new std::vector<std::string>;
 
     std::ifstream f(GetLabyrinthFileName());
 
     std::string line;
     while(std::getline(f, line)) {
-        board.push_back(line);
+        board->push_back(line);
     }
 
     f.close();
 
-    return board;
+    return *board;
 }

@@ -8,8 +8,16 @@
 enum class Direction {
     LEFT = -1,
     RIGHT = 1,
-    UP = -1,
-    DOWN = 1
+    UP = -2,
+    DOWN = 2
 };
+
+static int ConvertDirectionToInt(Direction dir)
+{
+    if(dir == Direction::LEFT || dir == Direction::RIGHT)
+        return (int)dir;
+    else
+        return (int)dir / 2;
+}
 
 #endif //PATHFINDINGALGORITHMSCOMPARISON_DIRECTION_H

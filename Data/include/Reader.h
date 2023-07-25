@@ -12,7 +12,7 @@ public:
     explicit Reader(const char*);
     virtual ~Reader() = default;
 
-    virtual std::vector<std::string> ReadBoardFromLabyrinthPath() = 0;
+    virtual std::vector<std::string>& ReadBoardFromLabyrinthPath() = 0;
     const std::string& GetConfigFileName() const;
     const std::string& GetLabyrinthFileName() const;
     char GetPlayerSymbol() const;

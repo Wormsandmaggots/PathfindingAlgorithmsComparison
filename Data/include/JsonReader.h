@@ -12,7 +12,7 @@ public:
     ~JsonReader() override = default;
 
     void ReadConfigContentFromFile() override;
-    std::vector<std::string> ReadBoardFromLabyrinthPath() override;
+    std::vector<std::string>& ReadBoardFromLabyrinthPath() override;
 };
 
 

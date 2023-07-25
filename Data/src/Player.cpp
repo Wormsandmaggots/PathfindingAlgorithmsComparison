@@ -10,9 +10,9 @@ Player::Player(int x, int y, char playerSymbol) : BoardInteractiveSymbol(x, y, p
 
 void Player::Move(Direction dir) {
     if(dir == Direction::LEFT || dir == Direction::RIGHT) {
-        SetX(GetX() + (int)dir);
+        SetX(GetX() + ConvertDirectionToInt(dir));
     }
     else {
-        SetY(GetY() + (int)dir);
+        SetY(GetY() + ConvertDirectionToInt(dir));
     }
 }
