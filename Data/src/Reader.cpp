@@ -26,10 +26,6 @@ char Reader::GetExitSymbol() const {
     return _exitSymbol;
 }
 
-char Reader::GetWallSymbol() const {
-    return _wallSymbol;
-}
-
 void Reader::SetPlayerSymbol(char playerSymbol) {
     _playerSymbol = playerSymbol;
 }
@@ -38,6 +34,27 @@ void Reader::SetExitSymbol(char exitSymbol) {
     _exitSymbol = exitSymbol;
 }
 
-void Reader::SetWallSymbol(char wallSymbol) {
-    _wallSymbol = wallSymbol;
+const std::string &Reader::GetOrder() const {
+    return _moveOrder;
 }
+
+void Reader::SetOrder(const std::string& order) {
+    _moveOrder = order;
+}
+
+void Reader::SetBlockingSymbols(std::string blockingSymbols) {
+    _blockingSymbols = blockingSymbols;
+}
+
+const std::string &Reader::GetBlockingSymbols() const {
+    return _blockingSymbols;
+}
+
+void Reader::SetVisitedReplacement(char visitedReplacement) {
+    _visitedReplacement = visitedReplacement;
+}
+
+char Reader::GetVisitedReplacement() {
+    return _visitedReplacement;
+}
+

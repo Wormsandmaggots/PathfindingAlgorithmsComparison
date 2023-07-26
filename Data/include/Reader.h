@@ -15,23 +15,28 @@ public:
     virtual std::vector<std::string>& ReadBoardFromLabyrinthPath() = 0;
     const std::string& GetConfigFileName() const;
     const std::string& GetLabyrinthFileName() const;
+    const std::string& GetOrder() const;
+    const std::string& GetBlockingSymbols() const;
     char GetPlayerSymbol() const;
     char GetExitSymbol() const;
-    char GetWallSymbol() const;
+    char GetVisitedReplacement();
 
 protected:
     virtual void ReadConfigContentFromFile() = 0;
     void SetPath(const std::string&);
+    void SetOrder(const std::string&);
     void SetPlayerSymbol(char playerSymbol);
+    void SetBlockingSymbols(std::string blockingSymbols);
     void SetExitSymbol(char exitSymbol);
-    void SetWallSymbol(char wallSymbol);
-
+    void SetVisitedReplacement(char visitedReplacement);
 private:
     std::string _configFile;
     std::string _labyrinthFile;
+    std::string _moveOrder;
+    std::string _blockingSymbols;
     char _playerSymbol;
     char _exitSymbol;
-    char _wallSymbol;
+    char _visitedReplacement;
 };
 
 

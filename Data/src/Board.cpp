@@ -22,7 +22,7 @@ std::string Board::ToString() const {
     return ss.str();
 }
 
-std::pair<int, int> Board::GetElementPosition(char elementSymbol) {
+std::pair<int, int> Board::GetElementPosition(char elementSymbol) const{
     int y = 0;
 
     for (std::string line : GetBoard()) {
@@ -36,4 +36,12 @@ std::pair<int, int> Board::GetElementPosition(char elementSymbol) {
 
     //if havent found element throw exception
     return *new std::pair<int, int>(-1,-1);
+}
+
+char Board::GetSymbolFromPosition(int x, int y) const {
+    return _board[y][x];
+}
+
+void Board::SetSymbolAtPosition(int x, int y, char symbol) {
+    _board[y][x] = symbol;
 }

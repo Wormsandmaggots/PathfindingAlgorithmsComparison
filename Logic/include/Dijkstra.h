@@ -9,10 +9,11 @@
 
 class Dijkstra : public Algorithm {
 public:
-    Dijkstra(BoardInteractiveSymbol* movingObject, Board* initialBoard);
+    Dijkstra(BoardInteractiveSymbol& movingObject, Board& initialBoard, const std::string& order,const std::string& blockingSymbols, BoardInteractiveSymbol& endPoint, char replacementSymbol);
     ~Dijkstra() override = default;
 
-    void Pathfinding() const override;
+    std::shared_ptr<Node> Pathfinding() const override;
+    float CalculateWeight(const BoardInteractiveSymbol& currentPlayer) const override;
 };
 
 

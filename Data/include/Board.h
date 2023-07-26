@@ -11,9 +11,11 @@ public:
     Board(std::vector<std::string>& board);
     ~Board() = default;
 
-    std::pair<int, int> GetElementPosition(char elementSymbol);
+    std::pair<int, int> GetElementPosition(char elementSymbol) const;
     std::string ToString() const;
     const std::vector<std::string>& GetBoard() const;
+    char GetSymbolFromPosition(int x, int y) const;
+    void SetSymbolAtPosition(int x, int y, char symbol);
 
 private:
     std::vector<std::string> _board;

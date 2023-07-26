@@ -40,7 +40,7 @@ add_library(PathfindingAlgorithmsComparisonLib STATIC
         Data/src/DataManager.cpp Data/include/DataManager.h
         Logic/src/Node.cpp Logic/include/Node.h
         Logic/src/Dijkstra.cpp Logic/include/Dijkstra.h
-        )
+        Data/src/EndPoint.cpp Data/include/EndPoint.h)
 
 
 target_link_libraries(PathfindingAlgorithmsComparisonLib PRIVATE nlohmann_json::nlohmann_json)
@@ -56,5 +56,5 @@ include_directories(${CMAKE_SOURCE_DIR})
 
 
 # Add the test executable and link it with the GTest library and your project's source files
-add_executable(RunTests TestDir/DataTest/PlayerTest.cpp TestDir/DataTest/DirectionTest.cpp TestDir/DataTest/JsonReaderTest.cpp TestDir/DataTest/BoardTest.cpp)
+add_executable(RunTests TestDir/DataTest/PlayerTest.cpp TestDir/DataTest/DirectionTest.cpp TestDir/DataTest/JsonReaderTest.cpp TestDir/DataTest/BoardTest.cpp TestDir/LogicTest/AlgorithmTest.cpp)
 target_link_libraries(RunTests PRIVATE PathfindingAlgorithmsComparisonLib gtest gtest_main)

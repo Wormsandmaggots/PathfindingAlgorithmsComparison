@@ -20,4 +20,20 @@ static int ConvertDirectionToInt(Direction dir)
         return (int)dir / 2;
 }
 
+static Direction ConvertCharToDirection(char dir)
+{
+    switch(dir){
+        case 'L':
+            return Direction::LEFT;
+        case 'R':
+            return Direction::RIGHT;
+        case 'U':
+            return Direction::UP;
+        case 'D':
+            return Direction::DOWN;
+        default:
+            throw "Invalid direction";
+            //on default should throw an exception
+    }
+}
 #endif //PATHFINDINGALGORITHMSCOMPARISON_DIRECTION_H

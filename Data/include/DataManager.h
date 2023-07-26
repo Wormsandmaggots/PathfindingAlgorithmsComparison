@@ -16,15 +16,18 @@ public:
 
     Board &GetBoard() const;
     Reader &GetReader() const;
-    Player &GetPlayer() const;
+    BoardInteractiveSymbol &GetPlayer() const;
+    BoardInteractiveSymbol &GetEndPoint() const;
     void SetBoard(Board &board);
     void SetReader(Reader &reader);
-    void SetPlayer(Player &player);
+    void SetPlayer(BoardInteractiveSymbol &player);
+    void SetEndPoint(BoardInteractiveSymbol &endPoint);
 
 private:
     Board* _board;
     Reader* _reader;
-    Player* _player;
+    BoardInteractiveSymbol* _player;
+    BoardInteractiveSymbol* _endPoint;
 
     void GenerateBoard();
 };

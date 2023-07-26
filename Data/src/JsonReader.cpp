@@ -25,7 +25,17 @@ void JsonReader::ReadConfigContentFromFile() {
     SetPath(data.at("path"));
     SetExitSymbol(((std::string)data.at("exit_symbol")).at(0));
     SetPlayerSymbol(((std::string)data.at("player_symbol")).at(0));
-    SetWallSymbol(((std::string)data.at("wall_symbol")).at(0));
+    SetBlockingSymbols(((std::string)data.at("blocking_symbols")));
+    SetOrder((std::string)data.at("order"));
+
+    std::string replacement = data.at("visited_replacement");
+
+    if(!replacement.empty()) {
+        SetVisitedReplacement(((std::string)data.at("visited_replacement")).at(0));
+    }
+    else {
+        SetVisitedReplacement(0);
+    }
 
     f.close();
 }
