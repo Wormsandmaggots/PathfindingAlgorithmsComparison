@@ -13,20 +13,13 @@ FetchContent_Declare(
         GIT_TAG v3.10.4  # Replace this with the version/tag you want to use
 )
 
-
-FetchContent_MakeAvailable(nlohmann_json)
-
-
 FetchContent_Declare(
         googletest
         URL https://github.com/google/googletest/archive/refs/heads/master.zip
 )
 
 
-FetchContent_MakeAvailable(googletest)
-
-
-include_directories(Data Logic)
+FetchContent_MakeAvailable(nlohmann_json googletest)
 
 
 add_library(PathfindingAlgorithmsComparisonLib STATIC
@@ -40,14 +33,16 @@ add_library(PathfindingAlgorithmsComparisonLib STATIC
         Data/src/DataManager.cpp Data/include/DataManager.h
         Logic/src/Node.cpp Logic/include/Node.h
         Logic/src/Dijkstra.cpp Logic/include/Dijkstra.h
-        Data/src/EndPoint.cpp Data/include/EndPoint.h)
+        Data/src/EndPoint.cpp Data/include/EndPoint.h
+        Data/src/Writer.cpp Data/include/Writer.h
+        Data/src/TxtWriter.cpp Data/include/TxtWriter.h Logic/src/LogicManager.cpp Logic/include/LogicManager.h)
 
 
 target_link_libraries(PathfindingAlgorithmsComparisonLib PRIVATE nlohmann_json::nlohmann_json)
 
 
 # Main executable links to the library
-add_executable(PathfindingAlgorithmsComparison main.cpp )
+add_executable(PathfindingAlgorithmsComparison main.cpp)
 target_link_libraries(PathfindingAlgorithmsComparison PRIVATE PathfindingAlgorithmsComparisonLib)
 
 

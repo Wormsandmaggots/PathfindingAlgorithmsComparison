@@ -2,7 +2,7 @@
 // Created by 48782 on 24.07.2023.
 //
 
-#include "include/Reader.h"
+#include "Data/include/Reader.h"
 
 Reader::Reader(const char* filename) : _configFile(filename) {}
 

@@ -29,6 +29,7 @@ protected:
     void SetBlockingSymbols(std::string blockingSymbols);
     void SetExitSymbol(char exitSymbol);
     void SetVisitedReplacement(char visitedReplacement);
+
 private:
     std::string _configFile;
     std::string _labyrinthFile;

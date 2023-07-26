@@ -37,7 +37,7 @@ TEST_F(DijkstraFixture, DijkstraInitializeTest)
     ASSERT_TRUE(dijkstra->GetPlayer() != nullptr);
     ASSERT_TRUE(dijkstra->GetEndPoint() != nullptr);
     ASSERT_TRUE(dijkstra->GetBlockingSymbols() != nullptr);
-    ASSERT_TRUE(dijkstra->GetBoard() != nullptr);
+    ASSERT_TRUE(dijkstra->GetInitialBoard() != nullptr);
     ASSERT_TRUE(dijkstra->GetOrder() != nullptr);
     ASSERT_TRUE(!dijkstra->GetBlockingSymbols()->empty());
     ASSERT_TRUE(!dijkstra->GetOrder()->empty());

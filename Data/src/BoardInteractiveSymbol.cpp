@@ -3,7 +3,7 @@
 //
 
 #include <sstream>
-#include "include/BoardInteractiveSymbol.h"
+#include "Data/include/BoardInteractiveSymbol.h"
 
 BoardInteractiveSymbol::BoardInteractiveSymbol(int x, int y, char symbol) : _x(x), _y(y), _elementSymbol(symbol) {}
 

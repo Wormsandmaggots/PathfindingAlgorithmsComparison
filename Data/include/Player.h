@@ -5,7 +5,7 @@
 #ifndef PATHFINDINGALGORITHMSCOMPARISON_PLAYER_H
 #define PATHFINDINGALGORITHMSCOMPARISON_PLAYER_H
 
-#include "include/BoardInteractiveSymbol.h"
+#include "Data/include/BoardInteractiveSymbol.h"
 
 enum class Direction;
 

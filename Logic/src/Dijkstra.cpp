@@ -6,12 +6,12 @@
 #include <functional>
 #include <cmath>
 #include <memory>
-#include "include/Dijkstra.h"
+#include "Logic/include/Dijkstra.h"
 #include "Logic/include/Node.h"
 
-Dijkstra::Dijkstra(BoardInteractiveSymbol& movingObject, Board& initialBoard, const std::string& order,
-                     const std::string& blockingSymbols, BoardInteractiveSymbol& endPoint, char replacementSymbol) :
-                     Algorithm(movingObject, initialBoard, order, blockingSymbols, endPoint, replacementSymbol){
+Dijkstra::Dijkstra(BoardInteractiveSymbol& movingObject, Board& initialBoard,
+                   BoardInteractiveSymbol& endPoint, Reader& reader, const std::function<void(std::string)>& toQueueWritingMethod) :
+                   Algorithm(movingObject, initialBoard, endPoint, reader, toQueueWritingMethod){
 
 }
 
@@ -28,7 +28,7 @@ std::shared_ptr<Node> Dijkstra::Pathfinding() const {
 
     std::unordered_map<std::string, bool> visited;
 
-    Board* newBoard = new Board(GetBoard());
+    Board* newBoard = new Board(*GetInitialBoard());
 
     pq.push(std::make_shared<Node>(*newBoard, 0, GetPlayer(), GetOrder(), GetBlockingSymbols(), nullptr, 0));
 
@@ -45,6 +45,7 @@ std::shared_ptr<Node> Dijkstra::Pathfinding() const {
         visited[currentState] = true;
 
         if (ObjectReachedEndPoint(node->GetPlayer())) {
+            UpdateBoardAction(node->GetPlayer(), GetPlayer().GetSymbol());
             return node;
         }
 
@@ -61,11 +62,17 @@ std::shared_ptr<Node> Dijkstra::Pathfinding() const {
 
         if(GetReplacementSymbol() != 0)
         {
-            //it should save to a file to simply watch how algorithm was looking for a solution
-            BoardInteractiveSymbol player(node->GetPlayer());
-            GetBoard().SetSymbolAtPosition(player.GetX(), player.GetY(), GetReplacementSymbol());
+            //instead of 'S' it is better to use value from config
+            //saving position of a player
+            //work with synchronization maybe because program can shut down before saving all boards
+            if(node->GetPathLength() == 0)
+                UpdateBoardAction(node->GetPlayer(), 'S');
+            else
+                UpdateBoardAction(node->GetPlayer(), GetReplacementSymbol());
         }
     }
+
+    return nullptr;
 }
 
 float Dijkstra::CalculateWeight(const BoardInteractiveSymbol& currentPlayer) const {

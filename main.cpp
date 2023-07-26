@@ -1,13 +1,12 @@
-#include "include/DataManager.h"
-#include "include/JsonReader.h"
-#include "Logic/include/Dijkstra.h"
+#include "Logic/include/LogicManager.h"
+#include "Data/include/JsonReader.h"
+#include "Data/include/TxtWriter.h"
 
 int main() {
-    DataManager* dm = new DataManager(*new JsonReader("config.json"));
+    LogicManager* lm = new LogicManager(*new JsonReader("config.json"), *new TxtWriter("Dijkstra.txt"));
 
-    Algorithm* dijkstra = new Dijkstra(dm->GetPlayer(), dm->GetBoard(), dm->GetReader().GetOrder(),
-                                       dm->GetReader().GetBlockingSymbols(), dm->GetEndPoint(), dm->GetReader().GetVisitedReplacement());
+    std::shared_ptr<Node> n = lm->StartPathfinding(AlgorithmEnum::DIJKSTRA);
 
-    std::shared_ptr<Node> n = dijkstra->Pathfinding();
+    std::cout << n->GetBoard().ToString() << std::endl;
     return 0;
 }

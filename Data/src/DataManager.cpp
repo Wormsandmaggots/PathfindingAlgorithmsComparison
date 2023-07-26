@@ -2,10 +2,10 @@
 // Created by 48782 on 25.07.2023.
 //
 
-#include "include/DataManager.h"
+#include "Data/include/DataManager.h"
 #include "Data/include/EndPoint.h"
 
-DataManager::DataManager(Reader& reader) : _reader(&reader) {
+DataManager::DataManager(Reader& reader, Writer& writer) : _reader(&reader), _writer(&writer) {
     GenerateBoard();
 }
 
@@ -49,4 +49,8 @@ void DataManager::SetEndPoint(BoardInteractiveSymbol &endPoint) {
 
 BoardInteractiveSymbol &DataManager::GetEndPoint() const {
     return *_endPoint;
+}
+
+Writer &DataManager::GetWriter() const {
+    return *_writer;
 }

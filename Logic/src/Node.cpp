@@ -3,7 +3,7 @@
 //
 
 #include <memory>
-#include "include/Node.h"
+#include "Logic/include/Node.h"
 
 const std::vector<Direction>& Node::GetAvailableMoves() const {
     return _availableMoves;

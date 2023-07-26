@@ -5,17 +5,19 @@
 #ifndef PATHFINDINGALGORITHMSCOMPARISON_DATAMANAGER_H
 #define PATHFINDINGALGORITHMSCOMPARISON_DATAMANAGER_H
 
-#include "include/Board.h"
-#include "include/Reader.h"
-#include "include/Player.h"
+#include "Data/include/Board.h"
+#include "Data/include/Reader.h"
+#include "Data/include/Player.h"
+#include "Writer.h"
 
 class DataManager {
 public:
-    explicit DataManager(Reader& reader);
+    explicit DataManager(Reader& reader, Writer& writer);
     virtual ~DataManager() = default;
 
     Board &GetBoard() const;
     Reader &GetReader() const;
+    Writer &GetWriter() const;
     BoardInteractiveSymbol &GetPlayer() const;
     BoardInteractiveSymbol &GetEndPoint() const;
     void SetBoard(Board &board);
@@ -26,6 +28,7 @@ public:
 private:
     Board* _board;
     Reader* _reader;
+    Writer* _writer;
     BoardInteractiveSymbol* _player;
     BoardInteractiveSymbol* _endPoint;
 

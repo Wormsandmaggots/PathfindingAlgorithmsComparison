@@ -5,12 +5,19 @@
 #include <memory>
 #include "Logic/include/Algorithm.h"
 
-Algorithm::Algorithm(BoardInteractiveSymbol& movingObject, Board& initialBoard, const std::string& order,
-                     const std::string& blockingSymbols, BoardInteractiveSymbol& endPoint, char replacementSymbol) :  _movingObject(&movingObject), _initialBoard(&initialBoard),
-                     _order(&order), _blockingSymbols(&blockingSymbols), _endPoint(&endPoint), _replacementSymbol(replacementSymbol) {
 
+Algorithm::Algorithm(BoardInteractiveSymbol &movingObject, Board &initialBoard, BoardInteractiveSymbol &endPoint,
+                     Reader &reader, const std::function<void(std::string)> &toQueueWritingMethod) :
+                     _movingObject(&movingObject), _initialBoard(&initialBoard), _endPoint(&endPoint),
+                     _order(reader.GetOrder()), _blockingSymbols(reader.GetBlockingSymbols()), _replacementSymbol(reader.GetVisitedReplacement()),
+                     ToQueueWritingMethod(toQueueWritingMethod) {
+
+    _boardToUpdate = new Board(initialBoard);
+    UpdateBoardAction = [this](BoardInteractiveSymbol player, char replaceSymbol){
+        GetUpdatedBoard()->SetSymbolAtPosition(player.GetX(), player.GetY(), replaceSymbol);
+        ToQueueWritingMethod(GetUpdatedBoard()->ToString());
+    };
 }
-
 
 std::vector<std::shared_ptr<Node>> Algorithm::GenerateNodes(std::shared_ptr<Node> currentNode) const {
     std::vector<std::shared_ptr<Node>> childNodes;
@@ -42,7 +49,7 @@ std::vector<std::shared_ptr<Node>> Algorithm::GenerateNodes(std::shared_ptr<Node
         newBoard.SetSymbolAtPosition(newPlayer.GetX(), newPlayer.GetY(), _movingObject->GetSymbol());
 
         //childNodes.emplace_back(newBoard, -1., newPlayer, _order, _blockingSymbols, &currentNode, currentNode.GetPathLength() + 1);
-        childNodes.push_back(std::make_shared<Node>(newBoard, -1., newPlayer, _order, _blockingSymbols, currentNode, currentNode->GetPathLength() + 1));
+        childNodes.push_back(std::make_shared<Node>(newBoard, -1., newPlayer, &_order, &_blockingSymbols, currentNode, currentNode->GetPathLength() + 1));
     }
 
     return childNodes;
@@ -52,8 +59,8 @@ bool Algorithm::ObjectReachedEndPoint(BoardInteractiveSymbol player) const {
     return player.ComparePositions(_endPoint);
 }
 
-Board Algorithm::GetBoard() const {
-    return *_initialBoard;
+Board* Algorithm::GetInitialBoard() const {
+    return _initialBoard;
 }
 
 BoardInteractiveSymbol Algorithm::GetPlayer() const {
@@ -61,11 +68,11 @@ BoardInteractiveSymbol Algorithm::GetPlayer() const {
 }
 
 const std::string* Algorithm::GetOrder() const {
-    return _order;
+    return &_order;
 }
 
 const std::string* Algorithm::GetBlockingSymbols() const {
-    return _blockingSymbols;
+    return &_blockingSymbols;
 }
 
 BoardInteractiveSymbol *Algorithm::GetEndPoint() const {
@@ -74,5 +81,9 @@ BoardInteractiveSymbol *Algorithm::GetEndPoint() const {
 
 char Algorithm::GetReplacementSymbol() const {
     return _replacementSymbol;
+}
+
+Board *Algorithm::GetUpdatedBoard() const {
+    return _boardToUpdate;
 }
 

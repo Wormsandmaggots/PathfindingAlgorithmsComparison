@@ -2,8 +2,7 @@
 // Created by 48782 on 24.07.2023.
 //
 
-#include "include/JsonReader.h"
-
+#include "Data/include/JsonReader.h"
 #include "fstream"
 #include "nlohmann/json.hpp"
 

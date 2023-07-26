@@ -9,7 +9,8 @@
 
 class Dijkstra : public Algorithm {
 public:
-    Dijkstra(BoardInteractiveSymbol& movingObject, Board& initialBoard, const std::string& order,const std::string& blockingSymbols, BoardInteractiveSymbol& endPoint, char replacementSymbol);
+    Dijkstra(BoardInteractiveSymbol& movingObject, Board& initialBoard,
+             BoardInteractiveSymbol& endPoint, Reader& reader,const std::function<void(std::string)>& toQueueWritingMethod);
     ~Dijkstra() override = default;
 
     std::shared_ptr<Node> Pathfinding() const override;
