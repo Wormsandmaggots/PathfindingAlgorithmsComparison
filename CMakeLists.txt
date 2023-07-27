@@ -35,7 +35,7 @@ add_library(PathfindingAlgorithmsComparisonLib STATIC
         Logic/src/Dijkstra.cpp Logic/include/Dijkstra.h
         Data/src/EndPoint.cpp Data/include/EndPoint.h
         Data/src/Writer.cpp Data/include/Writer.h
-        Data/src/TxtWriter.cpp Data/include/TxtWriter.h Logic/src/LogicManager.cpp Logic/include/LogicManager.h Logic/src/DirectorySystem.cpp Logic/include/DirectorySystem.h)
+        Data/src/TxtWriter.cpp Data/include/TxtWriter.h Logic/src/LogicManager.cpp Logic/include/LogicManager.h Logic/src/DirectorySystem.cpp Logic/include/DirectorySystem.h Logic/src/BFS.cpp Logic/include/BFS.h)
 
 
 target_link_libraries(PathfindingAlgorithmsComparisonLib PRIVATE nlohmann_json::nlohmann_json)

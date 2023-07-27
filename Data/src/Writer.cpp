@@ -2,6 +2,7 @@
 // Created by 48782 on 26.07.2023.
 //
 
+#include <fstream>
 #include "Data/include/Writer.h"
 
 Writer::Writer(std::string path) : _pathToFile(path) {
@@ -38,4 +39,34 @@ bool Writer::IsQueueEmpty() const {
 
 void Writer::SetIsQueueEmpty(bool isQueueEmpty) {
     _isQueueEmpty = isQueueEmpty;
+}
+
+void Writer::SetThread(std::shared_ptr<std::thread> thread) {
+    _fileThread = thread;
+}
+
+std::shared_ptr<std::thread> Writer::GetThread() const {
+    return _fileThread;
+}
+
+void Writer::StopWriting() {
+    if (_fileThread && _fileThread->joinable()) {
+        SetIsRunning(false);
+        GetCondition()->notify_one();
+        _fileThread->join();
+    }
+}
+
+bool Writer::IsThreadRunning() const {
+    return _isRunning;
+}
+
+void Writer::SetIsRunning(bool val) {
+    _isRunning = val;
+}
+
+void Writer::ChangeToWriteFile(std::string newFile) {
+    _pathToFile = newFile;
+    std::ofstream ofs(_pathToFile, std::ios::out | std::ios::trunc);
+    ofs.close();
 }

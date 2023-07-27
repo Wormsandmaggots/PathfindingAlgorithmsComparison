@@ -5,6 +5,7 @@
 #include "Logic/include/LogicManager.h"
 #include "Data/include/JsonReader.h"
 #include "Logic/include/Dijkstra.h"
+#include "Logic/include/BFS.h"
 
 #define ALGORITHMLAMBDA(algorithmName)  [](BoardInteractiveSymbol& movingObject, Board& initialBoard,\
                                         BoardInteractiveSymbol& endPoint, Reader& reader,\
@@ -17,7 +18,8 @@ std::unordered_map<AlgorithmEnum,
         BoardInteractiveSymbol&, Reader&, const std::function<void(std::string)>&)>>
         AlgorithmsMap =
 {
-        {AlgorithmEnum::DIJKSTRA, ALGORITHMLAMBDA(Dijkstra)}
+        {AlgorithmEnum::DIJKSTRA, ALGORITHMLAMBDA(Dijkstra)},
+        {AlgorithmEnum::BFS, ALGORITHMLAMBDA(BFS)}
 };
 
 LogicManager::LogicManager(Reader& reader, Writer& writer) {
@@ -38,10 +40,17 @@ std::shared_ptr<Node> LogicManager::StartPathfinding(AlgorithmEnum chosenAlgorit
     }
 
     delete newAlgorithm;
+    _dm->GetWriter().StopWriting();
 
     return node;
 }
 
+void LogicManager::ChangeWritingFile(std::string newFile) {
+    if(_dm->GetWriter().IsThreadRunning())
+        _dm->GetWriter().StopWriting();
+
+    _dm->GetWriter().ChangeToWriteFile(newFile);
+}
 
 
 

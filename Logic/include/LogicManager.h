@@ -12,6 +12,7 @@
 
 enum class AlgorithmEnum{
     DIJKSTRA,
+    BFS,
 };
 
 class LogicManager {
@@ -20,6 +21,7 @@ public:
     ~LogicManager() = default;
 
     std::shared_ptr<Node>  StartPathfinding(AlgorithmEnum);
+    void ChangeWritingFile(std::string);
 private:
     DataManager* _dm;
 };

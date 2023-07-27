@@ -24,6 +24,7 @@ public:
     void SetReader(Reader &reader);
     void SetPlayer(BoardInteractiveSymbol &player);
     void SetEndPoint(BoardInteractiveSymbol &endPoint);
+    void SetWriter(Writer&);
 
 private:
     Board* _board;

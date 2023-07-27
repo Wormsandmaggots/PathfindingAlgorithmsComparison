@@ -20,7 +20,7 @@ public:
     virtual std::shared_ptr<Node> Pathfinding() = 0;
     std::vector<std::shared_ptr<Node>> GenerateNodes(std::shared_ptr<Node> currentNode) const;
     bool ObjectReachedEndPoint(BoardInteractiveSymbol player) const;
-    virtual float CalculateWeight(const BoardInteractiveSymbol& currentPlayer) const = 0;
+    virtual float CalculateWeight(const BoardInteractiveSymbol& currentPlayer) const;
     virtual void WriteToFile(std::shared_ptr<Node>, char) const;
 
     Board* GetInitialBoard() const;

@@ -54,3 +54,7 @@ BoardInteractiveSymbol &DataManager::GetEndPoint() const {
 Writer &DataManager::GetWriter() const {
     return *_writer;
 }
+
+void DataManager::SetWriter(Writer &) {
+
+}

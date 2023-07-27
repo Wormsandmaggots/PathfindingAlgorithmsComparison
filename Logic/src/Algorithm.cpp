@@ -117,3 +117,7 @@ void Algorithm::WritingLogic(std::shared_ptr<Node> crNode, std::shared_ptr<Node>
     }
 }
 
+float Algorithm::CalculateWeight(const BoardInteractiveSymbol &currentPlayer) const {
+    return 0;
+}
+

@@ -21,7 +21,8 @@ void TxtWriter::ToQueue(std::string info) {
 
 void TxtWriter::ToFile() {
     std::function<void()> action = [this]() {
-        while (true) {
+        SetIsRunning(true);
+        while (IsThreadRunning()) {
             std::unique_lock<std::mutex> lock(*GetMutex());
 
             SetIsQueueEmpty(GetCondition()->wait_for(
@@ -42,6 +43,7 @@ void TxtWriter::ToFile() {
         }
     };
 
-    std::thread fileThread(action);
-    fileThread.detach();
+    std::shared_ptr<std::thread> fileThread = std::make_shared<std::thread>(action);
+    fileThread->detach();
+    SetThread(fileThread);
 }
