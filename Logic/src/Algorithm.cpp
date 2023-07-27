@@ -10,12 +10,12 @@ Algorithm::Algorithm(BoardInteractiveSymbol &movingObject, Board &initialBoard, 
                      Reader &reader, const std::function<void(std::string)> &toQueueWritingMethod) :
                      _movingObject(&movingObject), _initialBoard(&initialBoard), _endPoint(&endPoint),
                      _order(reader.GetOrder()), _blockingSymbols(reader.GetBlockingSymbols()), _replacementSymbol(reader.GetVisitedReplacement()),
-                     ToQueueWritingMethod(toQueueWritingMethod) {
+                     _startPointReplacement(reader.GetStartPointReplacement()), ToQueueWritingMethod(toQueueWritingMethod) {
 
     _boardToUpdate = new Board(initialBoard);
-    UpdateBoardAction = [this](BoardInteractiveSymbol player, char replaceSymbol){
-        GetUpdatedBoard()->SetSymbolAtPosition(player.GetX(), player.GetY(), replaceSymbol);
-        ToQueueWritingMethod(GetUpdatedBoard()->ToString());
+    UpdateBoardAction = [this](Node node, char replaceSymbol){
+        GetUpdatedBoard()->SetSymbolAtPosition(node.GetPlayer().GetX(), node.GetPlayer().GetY(), replaceSymbol);
+        ToQueueWritingMethod(std::to_string(GetVisitedCount()) + ".\n" + GetUpdatedBoard()->ToString());
     };
 }
 
@@ -33,8 +33,7 @@ std::vector<std::shared_ptr<Node>> Algorithm::GenerateNodes(std::shared_ptr<Node
             replaceSymbol = currentNode->GetParent()->GetBoard().GetSymbolFromPosition(newPlayer.GetX(), newPlayer.GetY());
         }
         else {
-            //consider setting in config sth like start position symbol to replace that 'S'
-            replaceSymbol = 'S';
+            replaceSymbol = GetStartPointReplacement();
         }
 
         newBoard.SetSymbolAtPosition(currentNode->GetPlayer().GetX(), currentNode->GetPlayer().GetY(), replaceSymbol);
@@ -48,7 +47,6 @@ std::vector<std::shared_ptr<Node>> Algorithm::GenerateNodes(std::shared_ptr<Node
 
         newBoard.SetSymbolAtPosition(newPlayer.GetX(), newPlayer.GetY(), _movingObject->GetSymbol());
 
-        //childNodes.emplace_back(newBoard, -1., newPlayer, _order, _blockingSymbols, &currentNode, currentNode.GetPathLength() + 1);
         childNodes.push_back(std::make_shared<Node>(newBoard, -1., newPlayer, &_order, &_blockingSymbols, currentNode, currentNode->GetPathLength() + 1));
     }
 
@@ -85,5 +83,37 @@ char Algorithm::GetReplacementSymbol() const {
 
 Board *Algorithm::GetUpdatedBoard() const {
     return _boardToUpdate;
+}
+
+void Algorithm::WriteToFile(std::shared_ptr<Node> node, char replaceSymbol) const {
+    UpdateBoardAction(*node, replaceSymbol);
+}
+
+int Algorithm::GetVisitedCount() const {
+    return _visitedCount;
+}
+
+void Algorithm::SetVisitedCount(int newVisitedCount) {
+    _visitedCount = newVisitedCount;
+}
+
+char Algorithm::GetStartPointReplacement() const {
+    return _startPointReplacement;
+}
+
+void Algorithm::WritingLogic(std::shared_ptr<Node> crNode, std::shared_ptr<Node> prNode) const {
+    if(GetReplacementSymbol() != 0)
+    {
+        if(crNode->GetPathLength() == 0)
+            WriteToFile(crNode, GetStartPointReplacement());
+        else
+        {
+            if(prNode->GetParent() != nullptr)
+                GetUpdatedBoard()->SetSymbolAtPosition(prNode->GetPlayer().GetX(), prNode->GetPlayer().GetY(), GetReplacementSymbol());
+
+            WriteToFile(crNode, GetPlayer().GetSymbol());
+        }
+
+    }
 }
 

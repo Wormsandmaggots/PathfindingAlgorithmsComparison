@@ -54,7 +54,15 @@ void Reader::SetVisitedReplacement(char visitedReplacement) {
     _visitedReplacement = visitedReplacement;
 }
 
-char Reader::GetVisitedReplacement() {
+char Reader::GetVisitedReplacement() const {
     return _visitedReplacement;
+}
+
+char Reader::GetStartPointReplacement() const {
+    return _startPointReplacement;
+}
+
+void Reader::SetStartPointReplacement(char startPointReplacement) {
+    _startPointReplacement = startPointReplacement;
 }
 

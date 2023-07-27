@@ -13,7 +13,7 @@ public:
              BoardInteractiveSymbol& endPoint, Reader& reader,const std::function<void(std::string)>& toQueueWritingMethod);
     ~Dijkstra() override = default;
 
-    std::shared_ptr<Node> Pathfinding() const override;
+    std::shared_ptr<Node> Pathfinding() override;
     float CalculateWeight(const BoardInteractiveSymbol& currentPlayer) const override;
 };
 

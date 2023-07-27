@@ -21,16 +21,14 @@ struct CompareNodes {
     }
 };
 
-std::shared_ptr<Node> Dijkstra::Pathfinding() const {
+std::shared_ptr<Node> Dijkstra::Pathfinding() {
     using NodePtr = std::shared_ptr<Node>;
-    // Priority queue using a custom comparison lambda
-    std::priority_queue<NodePtr, std::vector<NodePtr>, CompareNodes> pq;
 
+    std::priority_queue<NodePtr, std::vector<NodePtr>, CompareNodes> pq;
+    std::shared_ptr<Node> previousNode;
     std::unordered_map<std::string, bool> visited;
 
-    Board* newBoard = new Board(*GetInitialBoard());
-
-    pq.push(std::make_shared<Node>(*newBoard, 0, GetPlayer(), GetOrder(), GetBlockingSymbols(), nullptr, 0));
+    pq.push(std::make_shared<Node>(*GetInitialBoard(), 0, GetPlayer(), GetOrder(), GetBlockingSymbols(), nullptr, 0));
 
     while(!pq.empty())
     {
@@ -43,9 +41,14 @@ std::shared_ptr<Node> Dijkstra::Pathfinding() const {
         }
 
         visited[currentState] = true;
+        SetVisitedCount(GetVisitedCount() + 1);
 
         if (ObjectReachedEndPoint(node->GetPlayer())) {
-            UpdateBoardAction(node->GetPlayer(), GetPlayer().GetSymbol());
+            if(previousNode->GetParent() != nullptr)
+                GetUpdatedBoard()->SetSymbolAtPosition(previousNode->GetPlayer().GetX(), previousNode->GetPlayer().GetY(), GetReplacementSymbol());
+
+            WriteToFile(node, GetPlayer().GetSymbol());
+
             return node;
         }
 
@@ -60,16 +63,9 @@ std::shared_ptr<Node> Dijkstra::Pathfinding() const {
             }
         }
 
-        if(GetReplacementSymbol() != 0)
-        {
-            //instead of 'S' it is better to use value from config
-            //saving position of a player
-            //work with synchronization maybe because program can shut down before saving all boards
-            if(node->GetPathLength() == 0)
-                UpdateBoardAction(node->GetPlayer(), 'S');
-            else
-                UpdateBoardAction(node->GetPlayer(), GetReplacementSymbol());
-        }
+        WritingLogic(node, previousNode);
+
+        previousNode = node;
     }
 
     return nullptr;

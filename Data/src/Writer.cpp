@@ -31,3 +31,11 @@ Writer::~Writer() {
     delete _queueMutex;
     delete _queueCondition;
 }
+
+bool Writer::IsQueueEmpty() const {
+    return _isQueueEmpty;
+}
+
+void Writer::SetIsQueueEmpty(bool isQueueEmpty) {
+    _isQueueEmpty = isQueueEmpty;
+}

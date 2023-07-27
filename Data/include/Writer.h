@@ -21,12 +21,17 @@ public:
     std::mutex* GetMutex() const;
     std::queue<std::string>* GetQueue() const;
     std::condition_variable* GetCondition() const;
+    bool IsQueueEmpty() const;
+
+protected:
+    void SetIsQueueEmpty(bool isQueueEmpty);
 
 private:
     std::string _pathToFile;
     std::queue<std::string>* _queue;
     std::mutex* _queueMutex;
     std::condition_variable* _queueCondition;
+    bool _isQueueEmpty = true;
 };
 
 

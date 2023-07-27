@@ -19,7 +19,8 @@ public:
     const std::string& GetBlockingSymbols() const;
     char GetPlayerSymbol() const;
     char GetExitSymbol() const;
-    char GetVisitedReplacement();
+    char GetVisitedReplacement() const;
+    char GetStartPointReplacement() const;
 
 protected:
     virtual void ReadConfigContentFromFile() = 0;
@@ -29,6 +30,7 @@ protected:
     void SetBlockingSymbols(std::string blockingSymbols);
     void SetExitSymbol(char exitSymbol);
     void SetVisitedReplacement(char visitedReplacement);
+    void SetStartPointReplacement(char startPointReplacement);
 
 private:
     std::string _configFile;
@@ -38,6 +40,7 @@ private:
     char _playerSymbol;
     char _exitSymbol;
     char _visitedReplacement;
+    char _startPointReplacement;
 };
 
 

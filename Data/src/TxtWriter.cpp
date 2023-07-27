@@ -22,14 +22,13 @@ void TxtWriter::ToQueue(std::string info) {
 void TxtWriter::ToFile() {
     std::function<void()> action = [this]() {
         while (true) {
-            std::cout << "dupa" << std::endl;
             std::unique_lock<std::mutex> lock(*GetMutex());
 
-            bool queueNotEmpty = GetCondition()->wait_for(
+            SetIsQueueEmpty(GetCondition()->wait_for(
                     lock, std::chrono::milliseconds(10), [&]() { return !GetQueue()->empty(); }
-            );
+            ));
 
-            if (queueNotEmpty) {
+            if (IsQueueEmpty()) {
                 std::ofstream file(GetPath(), std::ios::app);
                 while (!GetQueue()->empty()) {
                     file << GetQueue()->front() << std::endl;

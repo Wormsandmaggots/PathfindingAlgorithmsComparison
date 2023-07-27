@@ -17,10 +17,11 @@ public:
                        BoardInteractiveSymbol& endPoint, Reader& reader, const std::function<void(std::string)>& toQueueWritingMethod);
     virtual ~Algorithm() = default;
 
-    virtual std::shared_ptr<Node> Pathfinding() const = 0;
+    virtual std::shared_ptr<Node> Pathfinding() = 0;
     std::vector<std::shared_ptr<Node>> GenerateNodes(std::shared_ptr<Node> currentNode) const;
     bool ObjectReachedEndPoint(BoardInteractiveSymbol player) const;
     virtual float CalculateWeight(const BoardInteractiveSymbol& currentPlayer) const = 0;
+    virtual void WriteToFile(std::shared_ptr<Node>, char) const;
 
     Board* GetInitialBoard() const;
     Board* GetUpdatedBoard() const;
@@ -29,10 +30,14 @@ public:
     const std::string* GetOrder() const;
     const std::string* GetBlockingSymbols() const;
     char GetReplacementSymbol() const;
+    char GetStartPointReplacement() const;
+    int GetVisitedCount() const;
+    void SetVisitedCount(int);
 
 protected:
-    std::function<void(BoardInteractiveSymbol, char)> UpdateBoardAction;
+    std::function<void(Node, char)> UpdateBoardAction;
     const std::function<void(std::string)>& ToQueueWritingMethod;
+    virtual void WritingLogic(std::shared_ptr<Node>, std::shared_ptr<Node>) const;
 
 private:
     BoardInteractiveSymbol* _movingObject;
@@ -42,6 +47,8 @@ private:
     const std::string& _order;
     const std::string& _blockingSymbols;
     char _replacementSymbol = 0;
+    char _startPointReplacement;
+    int _visitedCount = 0;
 };
 
 

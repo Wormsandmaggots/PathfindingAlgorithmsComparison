@@ -26,6 +26,7 @@ void JsonReader::ReadConfigContentFromFile() {
     SetPlayerSymbol(((std::string)data.at("player_symbol")).at(0));
     SetBlockingSymbols(((std::string)data.at("blocking_symbols")));
     SetOrder((std::string)data.at("order"));
+    SetStartPointReplacement(((std::string)data.at("start_point_replacement")).at(0));
 
     std::string replacement = data.at("visited_replacement");
 

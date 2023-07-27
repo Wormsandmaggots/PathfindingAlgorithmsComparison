@@ -30,7 +30,16 @@ std::shared_ptr<Node> LogicManager::StartPathfinding(AlgorithmEnum chosenAlgorit
             _dm->GetEndPoint(), _dm->GetReader(), toQueue);
 
     _dm->GetWriter().ToFile();
-    return newAlgorithm->Pathfinding();
+
+    std::shared_ptr<Node> node = newAlgorithm->Pathfinding();
+
+    while(!_dm->GetWriter().IsQueueEmpty()){
+        std::cout << "wait:" << std::endl;
+    }
+
+    delete newAlgorithm;
+
+    return node;
 }
 
 
