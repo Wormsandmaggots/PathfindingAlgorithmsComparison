@@ -47,7 +47,7 @@ std::vector<std::shared_ptr<Node>> Algorithm::GenerateNodes(std::shared_ptr<Node
 
         newBoard.SetSymbolAtPosition(newPlayer.GetX(), newPlayer.GetY(), _movingObject->GetSymbol());
 
-        childNodes.push_back(std::make_shared<Node>(newBoard, -1., newPlayer, &_order, &_blockingSymbols, currentNode, currentNode->GetPathLength() + 1));
+        childNodes.push_back(std::make_shared<Node>(newBoard, -1., newPlayer, currentNode->GetOrder(), &_blockingSymbols, currentNode, currentNode->GetPathLength() + 1));
     }
 
     return childNodes;

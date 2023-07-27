@@ -58,8 +58,8 @@ std::shared_ptr<Node> Node::GetParent() const {
     return _parent;
 }
 
-std::string Node::GetOrder() const {
-    return *_order;
+const std::string* Node::GetOrder() const {
+    return _order;
 }
 
 BoardInteractiveSymbol Node::GetPlayer() const {

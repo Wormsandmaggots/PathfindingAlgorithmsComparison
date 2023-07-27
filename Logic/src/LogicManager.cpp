@@ -6,6 +6,7 @@
 #include "Data/include/JsonReader.h"
 #include "Logic/include/Dijkstra.h"
 #include "Logic/include/BFS.h"
+#include "Logic/include/DFS.h"
 
 #define ALGORITHMLAMBDA(algorithmName)  [](BoardInteractiveSymbol& movingObject, Board& initialBoard,\
                                         BoardInteractiveSymbol& endPoint, Reader& reader,\
@@ -19,7 +20,8 @@ std::unordered_map<AlgorithmEnum,
         AlgorithmsMap =
 {
         {AlgorithmEnum::DIJKSTRA, ALGORITHMLAMBDA(Dijkstra)},
-        {AlgorithmEnum::BFS, ALGORITHMLAMBDA(BFS)}
+        {AlgorithmEnum::BFS, ALGORITHMLAMBDA(BFS)},
+        {AlgorithmEnum::DFS, ALGORITHMLAMBDA(DFS)}
 };
 
 LogicManager::LogicManager(Reader& reader, Writer& writer) {

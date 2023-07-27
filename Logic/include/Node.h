@@ -20,7 +20,7 @@ public:
     Board GetBoard() const;
     std::shared_ptr<Node> GetParent() const;
     int GetPathLength() const;
-    std::string GetOrder() const;
+    const std::string* GetOrder() const;
     BoardInteractiveSymbol GetPlayer() const;
     void SetWeight(float weight);
 

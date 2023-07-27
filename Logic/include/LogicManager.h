@@ -13,6 +13,7 @@
 enum class AlgorithmEnum{
     DIJKSTRA,
     BFS,
+    DFS,
 };
 
 class LogicManager {
