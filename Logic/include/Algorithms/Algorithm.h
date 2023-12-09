@@ -7,20 +7,20 @@
 
 #include <memory>
 #include <functional>
-#include "Data/include/BoardInteractiveSymbol.h"
-#include "Data/include/Board.h"
-#include "Node.h"
+#include "Data/include/Board/BoardInteractiveSymbol.h"
+#include "Data/include/Board/Board.h"
+#include "Logic/include/Node.h"
 
 class Algorithm {
 public:
     explicit Algorithm(BoardInteractiveSymbol& movingObject, Board& initialBoard,
-                       BoardInteractiveSymbol& endPoint, Reader& reader, const std::function<void(std::string)>& toQueueWritingMethod);
+                       BoardInteractiveSymbol& endPoint, Reader& reader,
+                       const std::function<void(std::string)>& toQueueWritingMethod);
     virtual ~Algorithm() = default;
 
-    virtual std::shared_ptr<Node> Pathfinding() = 0;
-    std::vector<std::shared_ptr<Node>> GenerateNodes(std::shared_ptr<Node> currentNode) const;
+    virtual std::shared_ptr<Node> Pathfinding(std::function<float(const BoardInteractiveSymbol&, const BoardInteractiveSymbol&)> = nullptr) = 0;
+    virtual std::vector<std::shared_ptr<Node>> GenerateNodes(std::shared_ptr<Node> currentNode) const;
     bool ObjectReachedEndPoint(BoardInteractiveSymbol player) const;
-    virtual float CalculateWeight(const BoardInteractiveSymbol& currentPlayer) const;
     virtual void WriteToFile(std::shared_ptr<Node>, char) const;
 
     Board* GetInitialBoard() const;
@@ -38,12 +38,14 @@ protected:
     std::function<void(Node, char)> UpdateBoardAction;
     const std::function<void(std::string)>& ToQueueWritingMethod;
     virtual void WritingLogic(std::shared_ptr<Node>, std::shared_ptr<Node>) const;
+    //float CalculateWeight(const BoardInteractiveSymbol&) const;
 
 private:
     BoardInteractiveSymbol* _movingObject;
     BoardInteractiveSymbol* _endPoint;
     Board* _initialBoard;
     Board* _boardToUpdate;
+    //std::function<float(const BoardInteractiveSymbol&, const BoardInteractiveSymbol&)>* _heuristic;
     const std::string& _order;
     const std::string& _blockingSymbols;
     char _replacementSymbol = 0;

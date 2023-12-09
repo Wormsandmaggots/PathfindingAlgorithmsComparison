@@ -2,7 +2,7 @@
 // Created by 48782 on 24.07.2023.
 //
 
-#include "Data/include/Board.h"
+#include "Data/include/Board/Board.h"
 
 #include <sstream>
 

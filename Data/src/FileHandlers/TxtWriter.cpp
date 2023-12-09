@@ -4,7 +4,7 @@
 
 #include <fstream>
 #include <iostream>
-#include "Data/include/TxtWriter.h"
+#include "Data/include/FileHandlers/TxtWriter.h"
 
 TxtWriter::TxtWriter(std::string path) : Writer(path){
     std::ofstream ofs(path, std::ios::out | std::ios::trunc);

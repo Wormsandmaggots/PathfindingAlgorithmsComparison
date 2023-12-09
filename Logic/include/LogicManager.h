@@ -8,23 +8,42 @@
 #include <memory>
 #include "Data/include/DataManager.h"
 #include "Node.h"
-#include "Data/include/Writer.h"
+#include "Data/include/FileHandlers/Writer.h"
+#include "Logic/include/Heuristic.h"
+#include "Logic/include/Algorithms/Algorithm.h"
+#include "Data/include/DynamicEnum/IntDynamicEnum.h"
 
-enum class AlgorithmEnum{
-    DIJKSTRA,
-    BFS,
-    DFS,
-};
+
+#define WeightMethodType std::function<float(const BoardInteractiveSymbol&, const BoardInteractiveSymbol&)>
+
+#define AlgorithmMethodType std::function<Algorithm*(BoardInteractiveSymbol&, Board&,BoardInteractiveSymbol&, Reader&, const std::function<void(std::string)>&)>
+
+#define ALGORITHMLAMBDA(algorithmName)  [](BoardInteractiveSymbol& movingObject, Board& initialBoard,\
+                                        BoardInteractiveSymbol& endPoint, Reader& reader,\
+                                        const std::function<void(std::string)>& toQueueWritingMethod) {\
+                                        return new algorithmName(movingObject, initialBoard, endPoint, reader, toQueueWritingMethod); \
+                                        }
 
 class LogicManager {
 public:
-    LogicManager(Reader& reader, Writer& writer);
+    LogicManager(Reader& reader, Writer& writer, bool createDefaultAlgorithms = true, bool createDefaultHeuristics = true);
     ~LogicManager() = default;
 
-    std::shared_ptr<Node>  StartPathfinding(AlgorithmEnum);
+    std::shared_ptr<Node>  StartPathfinding(std::string , std::string = "");
     void ChangeWritingFile(std::string);
+    void AddNewHeuristic(std::string, WeightMethodType);
+    void AddNewAlgorithm(std::string, AlgorithmMethodType);
+
 private:
     DataManager* _dm;
+
+    std::unordered_map<int, WeightMethodType> _weightMethods = {};
+
+    std::unordered_map<int, AlgorithmMethodType>
+            _algorithmsMap = {};
+
+    IntDynamicEnum<std::string> *_algorithmsNames = new IntDynamicEnum<std::string>();
+    IntDynamicEnum<std::string> *_heuristicsNames = new IntDynamicEnum<std::string>();
 };
 
 

@@ -5,7 +5,7 @@
 #ifndef PATHFINDINGALGORITHMSCOMPARISON_ENDPOINT_H
 #define PATHFINDINGALGORITHMSCOMPARISON_ENDPOINT_H
 
-#include "Data/include/BoardInteractiveSymbol.h"
+#include "Data/include/Board/BoardInteractiveSymbol.h"
 
 class EndPoint : public BoardInteractiveSymbol{
 public:

@@ -5,8 +5,8 @@
 #ifndef PATHFINDINGALGORITHMSCOMPARISON_NODE_H
 #define PATHFINDINGALGORITHMSCOMPARISON_NODE_H
 
-#include "Data/include/Board.h"
-#include "Data/include/BoardInteractiveSymbol.h"
+#include "Data/include/Board/Board.h"
+#include "Data/include/Board/BoardInteractiveSymbol.h"
 #include "Data/include/Direction.h"
 
 class Node {

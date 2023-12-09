@@ -5,7 +5,7 @@
 #ifndef PATHFINDINGALGORITHMSCOMPARISON_TXTWRITER_H
 #define PATHFINDINGALGORITHMSCOMPARISON_TXTWRITER_H
 
-#include "Data/include/Writer.h"
+#include "Writer.h"
 
 class TxtWriter : public Writer {
 public:

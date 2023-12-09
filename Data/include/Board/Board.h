@@ -4,7 +4,7 @@
 
 #ifndef PATHFINDINGALGORITHMSCOMPARISON_BOARD_H
 #define PATHFINDINGALGORITHMSCOMPARISON_BOARD_H
-#include "Reader.h"
+#include "Data/include/FileHandlers/Reader.h"
 
 class Board {
 public:

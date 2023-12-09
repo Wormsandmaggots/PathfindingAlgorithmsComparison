@@ -1,28 +1,27 @@
 #include "Logic/include/LogicManager.h"
-#include "Data/include/JsonReader.h"
-#include "Data/include/TxtWriter.h"
+#include "Data/include/FileHandlers/JsonReader.h"
+#include "Data/include/FileHandlers/TxtWriter.h"
 #include "Logic/include/DirectorySystem.h"
 
 int main() {
-    DirectorySystem::CreateDirectories({"Stats", "Stats/Dijkstra", "Stats/BFS", "Stats/DFS"});
+    LogicManager* lm = new LogicManager(*new JsonReader("config.json"), *new TxtWriter("Stats/Dijkstra/DijkstraEuclidean.txt"));
 
-    LogicManager* lm = new LogicManager(*new JsonReader("config.json"), *new TxtWriter("Stats/Dijkstra/Dijkstra.txt"));
-    std::shared_ptr<Node> n = lm->StartPathfinding(AlgorithmEnum::DIJKSTRA);
+    lm->StartPathfinding("DIJKSTRA", "EUCLIDEANDISTANCE");
+    lm->StartPathfinding("DIJKSTRA", "CHEBYSHEVDISTANCE");
+    lm->StartPathfinding("DIJKSTRA", "MANHATTANDISTANCE");
+    lm->StartPathfinding("DIJKSTRA", "INVERSE");
+    lm->StartPathfinding("DFS");
+    lm->StartPathfinding("BFS");
+    lm->StartPathfinding("ASTAR", "MANHATTANDISTANCE");
+    lm->StartPathfinding("ASTAR", "CHEBYSHEVDISTANCE");
+    lm->StartPathfinding("ASTAR", "INVERSE");
 
-    lm->ChangeWritingFile("Stats/DFS/DFS.txt");
+    std::shared_ptr<Node> n = lm->StartPathfinding("ASTAR", "EUCLIDEANDISTANCE");
 
-    lm->StartPathfinding(AlgorithmEnum::DFS);
-
-    lm->ChangeWritingFile("Stats/BFS/BFS.txt");
-
-    lm->StartPathfinding(AlgorithmEnum::BFS);
+    lm->StartPathfinding("JPS", "EUCLIDEANDISTANCE");
 
     std::cout << n->GetBoard().ToString() << std::endl;
+
     //std::system("cls");
     return 0;
-}
-
-void PrintBoard(std::shared_ptr<Node> node)
-{
-
 }

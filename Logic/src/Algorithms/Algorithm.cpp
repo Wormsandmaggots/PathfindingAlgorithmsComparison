@@ -3,7 +3,7 @@
 //
 
 #include <memory>
-#include "Logic/include/Algorithm.h"
+#include "Logic/include/Algorithms/Algorithm.h"
 
 
 Algorithm::Algorithm(BoardInteractiveSymbol &movingObject, Board &initialBoard, BoardInteractiveSymbol &endPoint,
@@ -117,7 +117,14 @@ void Algorithm::WritingLogic(std::shared_ptr<Node> crNode, std::shared_ptr<Node>
     }
 }
 
-float Algorithm::CalculateWeight(const BoardInteractiveSymbol &currentPlayer) const {
-    return 0;
-}
+//float Algorithm::CalculateWeight(const BoardInteractiveSymbol& currentPlayer) const {
+//    if(_heuristic == nullptr)
+//        return 0;
+//
+//    return (*_heuristic)(currentPlayer, *_endPoint);
+//}
+
+//float Algorithm::CalculateWeight(const BoardInteractiveSymbol &currentPlayer) const {
+//    return 0;
+//}
 

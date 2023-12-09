@@ -5,7 +5,7 @@
 #ifndef PATHFINDINGALGORITHMSCOMPARISON_DFS_H
 #define PATHFINDINGALGORITHMSCOMPARISON_DFS_H
 
-#include "Logic/include/Algorithm.h"
+#include "Logic/include/Algorithms/Algorithm.h"
 
 class DFS : public Algorithm {
 public:
@@ -14,7 +14,7 @@ public:
 
     ~DFS() override = default;
 
-    std::shared_ptr<Node> Pathfinding() override;
+    std::shared_ptr<Node> Pathfinding(std::function<float(const BoardInteractiveSymbol&, const BoardInteractiveSymbol&)> = nullptr) override;
 };
 
 

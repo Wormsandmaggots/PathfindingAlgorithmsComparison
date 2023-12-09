@@ -5,10 +5,10 @@
 #ifndef PATHFINDINGALGORITHMSCOMPARISON_DATAMANAGER_H
 #define PATHFINDINGALGORITHMSCOMPARISON_DATAMANAGER_H
 
-#include "Data/include/Board.h"
-#include "Data/include/Reader.h"
-#include "Data/include/Player.h"
-#include "Writer.h"
+#include "Data/include/Board/Board.h"
+#include "Data/include/FileHandlers/Reader.h"
+#include "Data/include/Board/Player.h"
+#include "Data/include/FileHandlers/Writer.h"
 
 class DataManager {
 public:

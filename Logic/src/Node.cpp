@@ -32,6 +32,8 @@ void Node::GenerateAvailableMoves(std::string blockingSymbols) {
             }
         }
 
+        //change it to check if symbol is start replace symbol or replace symbol
+
         if(isBlocking) {
             continue;
         }

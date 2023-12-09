@@ -3,7 +3,7 @@
 //
 
 #include "Data/include/DataManager.h"
-#include "Data/include/EndPoint.h"
+#include "Data/include/Board/EndPoint.h"
 
 DataManager::DataManager(Reader& reader, Writer& writer) : _reader(&reader), _writer(&writer) {
     GenerateBoard();

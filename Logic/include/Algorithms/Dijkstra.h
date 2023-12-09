@@ -5,16 +5,16 @@
 #ifndef PATHFINDINGALGORITHMSCOMPARISON_DIJKSTRA_H
 #define PATHFINDINGALGORITHMSCOMPARISON_DIJKSTRA_H
 
-#include "Logic/include/Algorithm.h"
+#include "Logic/include/Algorithms/Algorithm.h"
 
 class Dijkstra : public Algorithm {
 public:
     Dijkstra(BoardInteractiveSymbol& movingObject, Board& initialBoard,
-             BoardInteractiveSymbol& endPoint, Reader& reader,const std::function<void(std::string)>& toQueueWritingMethod);
+             BoardInteractiveSymbol& endPoint, Reader& reader,
+             const std::function<void(std::string)>& toQueueWritingMethod);
     ~Dijkstra() override = default;
 
-    std::shared_ptr<Node> Pathfinding() override;
-    float CalculateWeight(const BoardInteractiveSymbol& currentPlayer) const override;
+    std::shared_ptr<Node> Pathfinding(std::function<float(const BoardInteractiveSymbol&, const BoardInteractiveSymbol&)>) override;
 };
 
 

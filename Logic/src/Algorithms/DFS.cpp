@@ -2,27 +2,37 @@
 // Created by 48782 on 27.07.2023.
 //
 
-#include "Logic/include/BFS.h"
+#include <list>
+#include <algorithm>
+#include "Logic/include/Algorithms/DFS.h"
 
-#include <queue>
+DFS::DFS(BoardInteractiveSymbol &movingObject, Board &initialBoard, BoardInteractiveSymbol &endPoint, Reader &reader,
+         const std::function<void(std::string)> &toQueueWritingMethod) :
+         Algorithm(movingObject, initialBoard, endPoint,
+                   reader, toQueueWritingMethod) {}
+std::string reverseString(const std::string& str) {
+    std::string reversedStr;
+    for (int i = str.length() - 1; i >= 0; --i) {
+        reversedStr.push_back(str[i]);
+    }
+    return reversedStr;
+}
 
-BFS::BFS(BoardInteractiveSymbol &movingObject, Board &initialBoard, BoardInteractiveSymbol &endPoint, Reader &reader,
-         const std::function<void(std::string)> &toQueueWritingMethod) : Algorithm(movingObject, initialBoard, endPoint,
-                                                                                   reader, toQueueWritingMethod) {}
-
-std::shared_ptr<Node> BFS::Pathfinding() {
+std::shared_ptr<Node> DFS::Pathfinding(std::function<float(const BoardInteractiveSymbol&, const BoardInteractiveSymbol&)> CalculateWeight) {
     using NodePtr = std::shared_ptr<Node>;
 
-    std::queue<NodePtr> pq;
+    std::list<NodePtr> pq;
     std::shared_ptr<Node> previousNode;
     std::unordered_map<std::string, bool> visited;
 
-    pq.push(std::make_shared<Node>(*GetInitialBoard(), 0, GetPlayer(), GetOrder(), GetBlockingSymbols(), nullptr, 0));
+    std::string reversedOrder = reverseString(*GetOrder());
+
+    pq.push_back(std::make_shared<Node>(*GetInitialBoard(), 0, GetPlayer(), &reversedOrder, GetBlockingSymbols(), nullptr, 0));
 
     while(!pq.empty())
     {
-        NodePtr node = pq.front();
-        pq.pop();
+        NodePtr node = pq.back();
+        pq.pop_back();
 
         std::string currentState = node->GetBoard().ToString();
         if (visited[currentState]) {
@@ -46,7 +56,7 @@ std::shared_ptr<Node> BFS::Pathfinding() {
             std::string nextState = child->GetBoard().ToString();
 
             if (!visited[nextState]) {
-                pq.push(child);
+                pq.push_back(child);
             }
         }
 

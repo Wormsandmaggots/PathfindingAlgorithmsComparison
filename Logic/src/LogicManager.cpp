@@ -3,39 +3,58 @@
 //
 
 #include "Logic/include/LogicManager.h"
-#include "Data/include/JsonReader.h"
-#include "Logic/include/Dijkstra.h"
-#include "Logic/include/BFS.h"
-#include "Logic/include/DFS.h"
+#include "Data/include/FileHandlers/JsonReader.h"
+#include "Logic/include/Algorithms/Dijkstra.h"
+#include "Logic/include/Algorithms/BFS.h"
+#include "Logic/include/Algorithms/DFS.h"
+#include "Logic/include/Heuristic.h"
+#include "Logic/include/Algorithms/AStar.h"
+#include "Logic/include/Algorithms/JPS.h"
+#include "Logic/include/DirectorySystem.h"
 
-#define ALGORITHMLAMBDA(algorithmName)  [](BoardInteractiveSymbol& movingObject, Board& initialBoard,\
-                                        BoardInteractiveSymbol& endPoint, Reader& reader,\
-                                        const std::function<void(std::string)>& toQueueWritingMethod) {\
-                                        return new algorithmName(movingObject, initialBoard, endPoint, reader, toQueueWritingMethod);}
+LogicManager::LogicManager(Reader& reader, Writer& writer, bool createDefaultAlgorithms, bool createDefaultHeuristics) {
+    DirectorySystem::CreateDirectories({"Stats"});
 
-
-std::unordered_map<AlgorithmEnum,
-        std::function<Algorithm*(BoardInteractiveSymbol&, Board&,
-        BoardInteractiveSymbol&, Reader&, const std::function<void(std::string)>&)>>
-        AlgorithmsMap =
-{
-        {AlgorithmEnum::DIJKSTRA, ALGORITHMLAMBDA(Dijkstra)},
-        {AlgorithmEnum::BFS, ALGORITHMLAMBDA(BFS)},
-        {AlgorithmEnum::DFS, ALGORITHMLAMBDA(DFS)}
-};
-
-LogicManager::LogicManager(Reader& reader, Writer& writer) {
     _dm = new DataManager(reader, writer);
+
+    if(createDefaultAlgorithms)
+    {
+        AddNewAlgorithm("ASTAR", ALGORITHMLAMBDA(AStar));
+        AddNewAlgorithm("DIJKSTRA", ALGORITHMLAMBDA(Dijkstra));
+        AddNewAlgorithm("BFS", ALGORITHMLAMBDA(BFS));
+        AddNewAlgorithm("DFS", ALGORITHMLAMBDA(DFS));
+        AddNewAlgorithm("JPS", ALGORITHMLAMBDA(JPS));
+    }
+
+    if(createDefaultHeuristics)
+    {
+        AddNewHeuristic("EUCLIDEANDISTANCE", Heuristic::EuclideanDistance);
+        AddNewHeuristic("MANHATTANDISTANCE", Heuristic::ManhattanDistance);
+        AddNewHeuristic("CHEBYSHEVDISTANCE", Heuristic::ChebyshevDistance);
+        AddNewHeuristic("INVERSE", Heuristic::InverseHeuristic);
+    }
 }
 
-std::shared_ptr<Node> LogicManager::StartPathfinding(AlgorithmEnum chosenAlgorithm) {
+std::shared_ptr<Node> LogicManager::StartPathfinding(std::string chosenAlgorithm, std::string chosenHeuristic) {
+    //change this path name to lower case
+    ChangeWritingFile("Stats/" + (chosenAlgorithm + "/" + chosenAlgorithm + chosenHeuristic + ".txt"));
+
     auto toQueue = [this](std::string info){_dm->GetWriter().ToQueue(info);};
-    Algorithm* newAlgorithm = AlgorithmsMap[chosenAlgorithm](_dm->GetPlayer(), _dm->GetBoard(),
+
+    Algorithm* newAlgorithm = _algorithmsMap[_algorithmsNames->Find(chosenAlgorithm)](_dm->GetPlayer(), _dm->GetBoard(),
             _dm->GetEndPoint(), _dm->GetReader(), toQueue);
 
     _dm->GetWriter().ToFile();
 
-    std::shared_ptr<Node> node = newAlgorithm->Pathfinding();
+    std::shared_ptr<Node> node;
+
+    if(!chosenHeuristic.empty())
+    {
+        node = newAlgorithm->Pathfinding(_weightMethods[_heuristicsNames->Find(chosenHeuristic)]);
+        //DirectorySystem::CreateDirectories({"Stats/" + *chosenAlgorithm + "/" + *chosenHeuristic});
+    }
+    else
+        node = newAlgorithm->Pathfinding();
 
     while(!_dm->GetWriter().IsQueueEmpty()){
         std::cout << "wait:" << std::endl;
@@ -54,5 +73,14 @@ void LogicManager::ChangeWritingFile(std::string newFile) {
     _dm->GetWriter().ChangeToWriteFile(newFile);
 }
 
+//should be reference
+void LogicManager::AddNewHeuristic(std::string heuristicName, WeightMethodType weightMethod) {
+    _heuristicsNames->Add(heuristicName);
+    _weightMethods[_heuristicsNames->GetLen() - 1] = weightMethod;
+}
 
-
+void LogicManager::AddNewAlgorithm(std::string algorithmName, AlgorithmMethodType algorithmMethod) {
+    _algorithmsNames->Add(algorithmName);
+    DirectorySystem::CreateDirectories({"Stats/" + algorithmName});
+    _algorithmsMap[_algorithmsNames->GetLen() - 1] = algorithmMethod;
+}

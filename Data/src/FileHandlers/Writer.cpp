@@ -3,7 +3,7 @@
 //
 
 #include <fstream>
-#include "Data/include/Writer.h"
+#include "Data/include/FileHandlers/Writer.h"
 
 Writer::Writer(std::string path) : _pathToFile(path) {
     _queue = new std::queue<std::string>();

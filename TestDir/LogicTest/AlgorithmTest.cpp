@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "Logic/include/Dijkstra.h"
+#include "Logic/include/Algorithms/Dijkstra.h"
 #include "Data/include/DataManager.h"
 #include "include/JsonReader.h"
 

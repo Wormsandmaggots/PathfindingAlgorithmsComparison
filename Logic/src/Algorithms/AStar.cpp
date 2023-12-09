@@ -1,17 +1,13 @@
 //
-// Created by 48782 on 25.07.2023.
+// Created by 48782 on 01.08.2023.
 //
 
 #include <queue>
-#include <functional>
-#include <cmath>
-#include <memory>
-#include "Logic/include/Dijkstra.h"
-#include "Logic/include/Node.h"
+#include "Logic/include/Algorithms/AStar.h"
 
-Dijkstra::Dijkstra(BoardInteractiveSymbol& movingObject, Board& initialBoard,
-                   BoardInteractiveSymbol& endPoint, Reader& reader, const std::function<void(std::string)>& toQueueWritingMethod) :
-                   Algorithm(movingObject, initialBoard, endPoint, reader, toQueueWritingMethod){
+AStar::AStar(BoardInteractiveSymbol &movingObject, Board &initialBoard, BoardInteractiveSymbol &endPoint,
+             Reader &reader, const std::function<void(std::string)> &toQueueWritingMethod) :
+             Algorithm(movingObject, initialBoard, endPoint, reader, toQueueWritingMethod){
 
 }
 
@@ -21,7 +17,8 @@ struct CompareNodes {
     }
 };
 
-std::shared_ptr<Node> Dijkstra::Pathfinding() {
+//change it to allow passing heuristics methods
+std::shared_ptr<Node> AStar::Pathfinding(std::function<float(const BoardInteractiveSymbol&, const BoardInteractiveSymbol&)> CalculateWeight) {
     using NodePtr = std::shared_ptr<Node>;
 
     std::priority_queue<NodePtr, std::vector<NodePtr>, CompareNodes> pq;
@@ -55,10 +52,10 @@ std::shared_ptr<Node> Dijkstra::Pathfinding() {
         for(NodePtr child : GenerateNodes(node))
         {
             std::string nextState = child->GetBoard().ToString();
-            float weight = CalculateWeight(child->GetPlayer());
+            float weight = CalculateWeight(child->GetPlayer(), *GetEndPoint());
 
-            if (!visited[nextState] && (child->GetWeight() == -1 || node->GetWeight() + weight < child->GetWeight())) {
-                child->SetWeight(node->GetWeight() + weight);
+            if (!visited[nextState]) {
+                child->SetWeight(weight);
                 pq.push(child);
             }
         }
@@ -69,9 +66,4 @@ std::shared_ptr<Node> Dijkstra::Pathfinding() {
     }
 
     return nullptr;
-}
-
-float Dijkstra::CalculateWeight(const BoardInteractiveSymbol& currentPlayer) const {
-    return sqrt(pow(currentPlayer.GetX() - GetEndPoint()->GetX(),2) +
-                pow(currentPlayer.GetY() - GetEndPoint()->GetY(),2));
 }
