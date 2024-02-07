@@ -12,8 +12,21 @@
 #include "Logic/include/Heuristic.h"
 #include "Logic/include/Algorithms/Algorithm.h"
 #include "Data/include/DynamicEnum/IntDynamicEnum.h"
+#include "Data/include/Statistics.h"
 
+#define ASTAR "AStar"
+#define DIJKSTRA "Dijkstra"
+#define BFSA "BFS"
+#define DFSA "DFS"
+#define JPSA "JPS"
 
+#define EUCLIDEAN "EuclideanDistance"
+#define INVERSE "Inverse"
+#define CHEBYSHEV "ChebyshevDistance"
+#define MANHATTAN "ManhattanDistance"
+
+//method that will return a float
+//parameters will be a player and endPoint as BoardInteractiveSymbol
 #define WeightMethodType std::function<float(const BoardInteractiveSymbol&, const BoardInteractiveSymbol&)>
 
 #define AlgorithmMethodType std::function<Algorithm*(BoardInteractiveSymbol&, Board&,BoardInteractiveSymbol&, Reader&, const std::function<void(std::string)>&)>
@@ -27,9 +40,9 @@
 class LogicManager {
 public:
     LogicManager(Reader& reader, Writer& writer, bool createDefaultAlgorithms = true, bool createDefaultHeuristics = true);
-    ~LogicManager() = default;
+    virtual ~LogicManager();
 
-    std::shared_ptr<Node>  StartPathfinding(std::string , std::string = "");
+    Statistics  StartPathfinding(std::string , std::string = "");
     void ChangeWritingFile(std::string);
     void AddNewHeuristic(std::string, WeightMethodType);
     void AddNewAlgorithm(std::string, AlgorithmMethodType);
@@ -37,10 +50,10 @@ public:
 private:
     DataManager* _dm;
 
-    std::unordered_map<int, WeightMethodType> _weightMethods = {};
+    IntDynamicEnum<WeightMethodType> _weightMethods;
 
-    std::unordered_map<int, AlgorithmMethodType>
-            _algorithmsMap = {};
+    IntDynamicEnum<AlgorithmMethodType>
+            _algorithmsMap;
 
     IntDynamicEnum<std::string> *_algorithmsNames = new IntDynamicEnum<std::string>();
     IntDynamicEnum<std::string> *_heuristicsNames = new IntDynamicEnum<std::string>();

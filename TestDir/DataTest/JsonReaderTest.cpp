@@ -2,10 +2,10 @@
 // Created by 48782 on 25.07.2023.
 //
 #include "gtest/gtest.h"
-#include "include/JsonReader.h"
 #include "string"
+#include "Data/include/FileHandlers/JsonReader.h"
 
-std::string path = "config.json";
+std::string path = "res/config.json";
 Reader* jsonReader = new JsonReader(path.c_str());
 
 TEST(JsonReaderTest, JsonReaderInitializationTest)

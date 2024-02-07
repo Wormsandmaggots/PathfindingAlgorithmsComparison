@@ -19,31 +19,38 @@ void TxtWriter::ToQueue(std::string info) {
     GetCondition()->notify_one();
 }
 
-void TxtWriter::ToFile() {
+void TxtWriter::WriteAsync() {
     std::function<void()> action = [this]() {
         SetIsRunning(true);
         while (IsThreadRunning()) {
             std::unique_lock<std::mutex> lock(*GetMutex());
 
-            SetIsQueueEmpty(GetCondition()->wait_for(
-                    lock, std::chrono::milliseconds(10), [&]() { return !GetQueue()->empty(); }
-            ));
+            GetCondition()->wait(lock, [&]() { return !GetQueue()->empty(); });
 
-            if (IsQueueEmpty()) {
+            if (!IsQueueEmpty()) {
                 std::ofstream file(GetPath(), std::ios::app);
-                while (!GetQueue()->empty()) {
+                while (!IsQueueEmpty()) {
                     file << GetQueue()->front() << std::endl;
                     GetQueue()->pop();
                 }
+
             }
 
             lock.unlock();
 
-            //std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
     };
 
     std::shared_ptr<std::thread> fileThread = std::make_shared<std::thread>(action);
     fileThread->detach();
     SetThread(fileThread);
+}
+
+void TxtWriter::WriteAll() {
+    std::ofstream file(GetPath(), std::ios::app);
+    while(!IsQueueEmpty())
+    {
+        file << GetQueue()->front() << std::endl;
+        GetQueue()->pop();
+    }
 }

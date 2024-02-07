@@ -13,13 +13,18 @@
 class DataManager {
 public:
     explicit DataManager(Reader& reader, Writer& writer);
-    virtual ~DataManager() = default;
+    virtual ~DataManager();
 
     Board &GetBoard() const;
     Reader &GetReader() const;
     Writer &GetWriter() const;
     BoardInteractiveSymbol &GetPlayer() const;
     BoardInteractiveSymbol &GetEndPoint() const;
+    void WriteAll() const;
+    void ToQueue(std::string) const;
+    bool IsWriting() const;
+    void StopWriting() const;
+    void ChangeWritingFile(std::string);
     void SetBoard(Board &board);
     void SetReader(Reader &reader);
     void SetPlayer(BoardInteractiveSymbol &player);

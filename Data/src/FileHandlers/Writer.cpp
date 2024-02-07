@@ -3,6 +3,7 @@
 //
 
 #include <fstream>
+#include <iostream>
 #include "Data/include/FileHandlers/Writer.h"
 
 Writer::Writer(std::string path) : _pathToFile(path) {
@@ -34,14 +35,13 @@ Writer::~Writer() {
 }
 
 bool Writer::IsQueueEmpty() const {
-    return _isQueueEmpty;
-}
-
-void Writer::SetIsQueueEmpty(bool isQueueEmpty) {
-    _isQueueEmpty = isQueueEmpty;
+    return _queue->empty();
 }
 
 void Writer::SetThread(std::shared_ptr<std::thread> thread) {
+    if (_fileThread && _fileThread->joinable())
+        _fileThread->join();
+    
     _fileThread = thread;
 }
 

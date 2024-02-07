@@ -3,8 +3,8 @@
 //
 
 #include <gtest/gtest.h>
-#include "include/Direction.h"
-#include "include/Player.h"
+#include "Data/include/Direction.h"
+#include "Data/include/Board/Player.h"
 
 class PlayerTest : public ::testing::Test {
 protected:
@@ -20,7 +20,7 @@ protected:
 
     // Clean up the fixture after running each test case
     void TearDown() override {
-        free(player);
+        delete player;
     }
 };
 

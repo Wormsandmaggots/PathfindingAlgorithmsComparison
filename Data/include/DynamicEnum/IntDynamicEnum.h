@@ -7,30 +7,48 @@
 
 #include "Data/include/DynamicEnum/DynamicEnum.h"
 
-template <typename keysType>
-class IntDynamicEnum : public DynamicEnum<keysType, int> {
+template <typename valueType>
+class IntDynamicEnum : public DynamicEnum<int, valueType> {
 public:
-    using DynamicEnum<keysType, int>::GetLen;
-    using DynamicEnum<keysType, int>::Add;
+    using DynamicEnum<int, valueType>::GetLen;
+    using DynamicEnum<int, valueType>::Add;
+    using DynamicEnum<int, valueType>::GetEnum;
 
     explicit IntDynamicEnum() = default;
-    explicit IntDynamicEnum(std::vector<EnumValue<keysType, int>> &e) : DynamicEnum<keysType, int>(e) {}
-    explicit IntDynamicEnum(std::vector<keysType> toConvert);
+    explicit IntDynamicEnum(std::vector<EnumValue<int, valueType>> &e) : DynamicEnum<int, valueType>(e) {}
+    explicit IntDynamicEnum(std::vector<valueType> toConvert);
 
-    void Add(keysType key);
+    void Add(valueType value);
+    int IndexOf(valueType value);
 
     ~IntDynamicEnum() override = default;
 };
 
-template<typename keysType>
-void IntDynamicEnum<keysType>::Add(keysType key) {
-    Add(key, GetLen());
+template<typename valueType>
+int IntDynamicEnum<valueType>::IndexOf(valueType value) {
+    int index = 0;
+    for(auto v : GetEnum())
+    {
+        if(v.GetValue() == value)
+        {
+            return index;
+        }
+
+        index++;
+    }
+
+    return -1;
 }
 
-template<typename keysType>
-IntDynamicEnum<keysType>::IntDynamicEnum(std::vector<keysType> toConvert) {
-    for (keysType k : toConvert) {
-        Add(k);
+template<typename valueType>
+void IntDynamicEnum<valueType>::Add(valueType value) {
+    Add(GetLen(), value);
+}
+
+template<typename valueType>
+IntDynamicEnum<valueType>::IntDynamicEnum(std::vector<valueType> toConvert) {
+    for (valueType v : toConvert) {
+        Add(v);
     }
 }
 

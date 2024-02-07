@@ -8,7 +8,8 @@
 
 #include <type_traits>
 
-template<typename keyType, typename valueType>  class EnumValue {
+template<typename keyType, typename valueType>
+class EnumValue {
 public:
     EnumValue(keyType key, valueType value) : _key(key), _value(value) {}
 
@@ -22,7 +23,7 @@ public:
 
     bool operator==(const EnumValue<keyType, valueType> other) const
     {
-        return _key == other._key && _value == other._value;
+        return _key == other._key; //&& _value == other._value;
     }
 
     keyType GetKey() const {

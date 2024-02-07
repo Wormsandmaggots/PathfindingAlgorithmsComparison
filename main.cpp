@@ -1,26 +1,27 @@
 #include "Logic/include/LogicManager.h"
 #include "Data/include/FileHandlers/JsonReader.h"
 #include "Data/include/FileHandlers/TxtWriter.h"
-#include "Logic/include/DirectorySystem.h"
 
 int main() {
-    LogicManager* lm = new LogicManager(*new JsonReader("config.json"), *new TxtWriter("Stats/Dijkstra/DijkstraEuclidean.txt"));
+    LogicManager* lm = new LogicManager(*new JsonReader("res/config.json"), *new TxtWriter(""));
 
-    lm->StartPathfinding("DIJKSTRA", "EUCLIDEANDISTANCE");
-    lm->StartPathfinding("DIJKSTRA", "CHEBYSHEVDISTANCE");
-    lm->StartPathfinding("DIJKSTRA", "MANHATTANDISTANCE");
-    lm->StartPathfinding("DIJKSTRA", "INVERSE");
-    lm->StartPathfinding("DFS");
-    lm->StartPathfinding("BFS");
-    lm->StartPathfinding("ASTAR", "MANHATTANDISTANCE");
-    lm->StartPathfinding("ASTAR", "CHEBYSHEVDISTANCE");
-    lm->StartPathfinding("ASTAR", "INVERSE");
+    lm->StartPathfinding(DIJKSTRA, EUCLIDEAN);
+    lm->StartPathfinding(DIJKSTRA, CHEBYSHEV);
+    lm->StartPathfinding(DIJKSTRA, MANHATTAN);
+    lm->StartPathfinding(DIJKSTRA, INVERSE);
+    lm->StartPathfinding(DFSA);
+    lm->StartPathfinding(BFSA);
+    lm->StartPathfinding(ASTAR, MANHATTAN);
+    lm->StartPathfinding(ASTAR, CHEBYSHEV);
+    lm->StartPathfinding(ASTAR, INVERSE);
 
-    std::shared_ptr<Node> n = lm->StartPathfinding("ASTAR", "EUCLIDEANDISTANCE");
+    Statistics s = lm->StartPathfinding(ASTAR, EUCLIDEAN);
 
-    lm->StartPathfinding("JPS", "EUCLIDEANDISTANCE");
+    //lm->StartPathfinding(JPSA, EUCLIDEAN);
 
-    std::cout << n->GetBoard().ToString() << std::endl;
+    std::cout << s.endNode->GetBoard().ToString() << std::endl;
+
+    delete lm;
 
     //std::system("cls");
     return 0;

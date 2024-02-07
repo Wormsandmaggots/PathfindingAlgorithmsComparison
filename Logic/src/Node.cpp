@@ -42,8 +42,8 @@ void Node::GenerateAvailableMoves(std::string blockingSymbols) {
     }
 }
 
-Node::Node(Board board, float weight, BoardInteractiveSymbol player, const std::string* order, const std::string* blockingSymbols, std::shared_ptr<Node> parent, int pathLen) :
- _nodesBoard(board), _nodeWeight(weight), _player(player), _order(order), _parent(parent), _pathLength(pathLen)
+Node::Node(Board board, float weight, BoardInteractiveSymbol player, const std::string* order, const std::string* blockingSymbols, std::shared_ptr<Node> parent, int pathLen, Direction move) :
+ _nodesBoard(board), _nodeWeight(weight), _player(player), _order(order), _parent(parent), _pathLength(pathLen), _move(move)
 {
     GenerateAvailableMoves(*blockingSymbols);
 }
@@ -74,4 +74,12 @@ void Node::SetWeight(float weight) {
 
 int Node::GetPathLength() const {
     return _pathLength;
+}
+
+Direction Node::GetMove() const {
+    return _move;
+}
+
+Node::~Node() {
+
 }

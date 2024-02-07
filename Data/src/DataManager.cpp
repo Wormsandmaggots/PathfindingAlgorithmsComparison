@@ -22,14 +22,17 @@ BoardInteractiveSymbol &DataManager::GetPlayer() const {
 }
 
 void DataManager::SetBoard(Board& board) {
+    delete _board;
     _board = &board;
 }
 
 void DataManager::SetReader(Reader& reader) {
+    delete _reader;
     _reader = &reader;
 }
 
 void DataManager::SetPlayer(BoardInteractiveSymbol& player) {
+    delete _player;
     _player = &player;
 }
 
@@ -44,6 +47,7 @@ void DataManager::GenerateBoard() {
 }
 
 void DataManager::SetEndPoint(BoardInteractiveSymbol &endPoint) {
+    delete _endPoint;
     _endPoint = &endPoint;
 }
 
@@ -55,6 +59,35 @@ Writer &DataManager::GetWriter() const {
     return *_writer;
 }
 
-void DataManager::SetWriter(Writer &) {
+void DataManager::SetWriter(Writer &writer) {
+    delete _writer;
+    _writer = &writer;
+}
 
+void DataManager::WriteAll() const {
+    _writer->WriteAll();
+}
+
+void DataManager::ToQueue(std::string info) const {
+    GetWriter().ToQueue(info);
+}
+
+bool DataManager::IsWriting() const {
+    return _writer->IsThreadRunning();
+}
+
+void DataManager::StopWriting() const {
+    _writer->StopWriting();
+}
+
+void DataManager::ChangeWritingFile(std::string newFile) {
+    _writer->ChangeToWriteFile(newFile);
+}
+
+DataManager::~DataManager() {
+    delete _board;
+    delete _writer;
+    delete _reader;
+    delete _player;
+    delete _endPoint;
 }

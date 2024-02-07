@@ -27,7 +27,8 @@ std::shared_ptr<Node> DFS::Pathfinding(std::function<float(const BoardInteractiv
 
     std::string reversedOrder = reverseString(*GetOrder());
 
-    pq.push_back(std::make_shared<Node>(*GetInitialBoard(), 0, GetPlayer(), &reversedOrder, GetBlockingSymbols(), nullptr, 0));
+    pq.push_back(std::make_shared<Node>(*GetInitialBoard(), 0, *GetPlayer(), &reversedOrder, GetBlockingSymbols(), nullptr, 0,
+                                        Direction::STARTPOINT));
 
     while(!pq.empty())
     {
@@ -40,13 +41,14 @@ std::shared_ptr<Node> DFS::Pathfinding(std::function<float(const BoardInteractiv
         }
 
         visited[currentState] = true;
+
         SetVisitedCount(GetVisitedCount() + 1);
 
         if (ObjectReachedEndPoint(node->GetPlayer())) {
             if(previousNode->GetParent() != nullptr)
                 GetUpdatedBoard()->SetSymbolAtPosition(previousNode->GetPlayer().GetX(), previousNode->GetPlayer().GetY(), GetReplacementSymbol());
 
-            WriteToFile(node, GetPlayer().GetSymbol());
+            WriteToFile(node, GetPlayer()->GetSymbol());
 
             return node;
         }
@@ -54,6 +56,8 @@ std::shared_ptr<Node> DFS::Pathfinding(std::function<float(const BoardInteractiv
         for(NodePtr child : GenerateNodes(node))
         {
             std::string nextState = child->GetBoard().ToString();
+
+            SetProcessedCount(GetProcessedCount() + 1);
 
             if (!visited[nextState]) {
                 pq.push_back(child);

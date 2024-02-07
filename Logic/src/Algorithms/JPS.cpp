@@ -24,7 +24,7 @@ JPS::Pathfinding(std::function<float(const BoardInteractiveSymbol &, const Board
     std::priority_queue<std::shared_ptr<Node>, std::vector<std::shared_ptr<Node>>, CompareNodes> openList;
     std::unordered_map<std::string, bool> visited;
 
-    openList.push(std::make_shared<Node>(*GetInitialBoard(), 0, GetPlayer(), GetOrder(), GetBlockingSymbols(), nullptr, 0));
+    openList.push(std::make_shared<Node>(*GetInitialBoard(), 0, *GetPlayer(), GetOrder(), GetBlockingSymbols(), nullptr, 0, Direction::STARTPOINT));
 
 //    while (!openList.empty()) {
 //        std::shared_ptr<Node> currentNode = openList.top();
@@ -104,9 +104,9 @@ std::vector<std::shared_ptr<Node>> JPS::GenerateNodes(std::shared_ptr<Node> curr
                 newPlayer.SetY(newPlayer.GetY() + ConvertDirectionToInt(dir));
             }
 
-            newBoard.SetSymbolAtPosition(newPlayer.GetX(), newPlayer.GetY(), GetPlayer().GetSymbol());
+            newBoard.SetSymbolAtPosition(newPlayer.GetX(), newPlayer.GetY(), GetPlayer()->GetSymbol());
 
-            nextMove = std::make_shared<Node>(newBoard, -1., newPlayer, nextMove->GetOrder(), GetBlockingSymbols(), nextMove, nextMove->GetPathLength() + 1);
+            nextMove = std::make_shared<Node>(newBoard, -1., newPlayer, nextMove->GetOrder(), GetBlockingSymbols(), nextMove, nextMove->GetPathLength() + 1, dir);
         }
 
         childNodes.push_back(nextMove);
@@ -150,4 +150,5 @@ std::shared_ptr<Node> JPS::Jump(std::shared_ptr<Node> currentNode, const Directi
 
     // Continue jumping in the same direction
     //return Jump(neighbor, direction);
+    return nullptr;
 }

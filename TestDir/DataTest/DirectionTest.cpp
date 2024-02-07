@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "include/Direction.h"
+#include "Data/include/Direction.h"
 
 TEST(DirectionTest, DirectionConversionTest)
 {

@@ -13,10 +13,14 @@ Algorithm::Algorithm(BoardInteractiveSymbol &movingObject, Board &initialBoard, 
                      _startPointReplacement(reader.GetStartPointReplacement()), ToQueueWritingMethod(toQueueWritingMethod) {
 
     _boardToUpdate = new Board(initialBoard);
+
     UpdateBoardAction = [this](Node node, char replaceSymbol){
         GetUpdatedBoard()->SetSymbolAtPosition(node.GetPlayer().GetX(), node.GetPlayer().GetY(), replaceSymbol);
-        ToQueueWritingMethod(std::to_string(GetVisitedCount()) + ".\n" + GetUpdatedBoard()->ToString());
+        ToQueueWritingMethod(std::to_string(GetVisitedCount()) + ".\n");
+        ToQueueWritingMethod(GetUpdatedBoard()->ToString());
+        ToQueueWritingMethod("-----------------------------------------------------------------------------");
     };
+
 }
 
 std::vector<std::shared_ptr<Node>> Algorithm::GenerateNodes(std::shared_ptr<Node> currentNode) const {
@@ -47,7 +51,7 @@ std::vector<std::shared_ptr<Node>> Algorithm::GenerateNodes(std::shared_ptr<Node
 
         newBoard.SetSymbolAtPosition(newPlayer.GetX(), newPlayer.GetY(), _movingObject->GetSymbol());
 
-        childNodes.push_back(std::make_shared<Node>(newBoard, -1., newPlayer, currentNode->GetOrder(), &_blockingSymbols, currentNode, currentNode->GetPathLength() + 1));
+        childNodes.push_back(std::make_shared<Node>(newBoard, -1., newPlayer, currentNode->GetOrder(), &_blockingSymbols, currentNode, currentNode->GetPathLength() + 1, dir));
     }
 
     return childNodes;
@@ -61,8 +65,8 @@ Board* Algorithm::GetInitialBoard() const {
     return _initialBoard;
 }
 
-BoardInteractiveSymbol Algorithm::GetPlayer() const {
-    return *_movingObject;
+BoardInteractiveSymbol* Algorithm::GetPlayer() const {
+    return _movingObject;
 }
 
 const std::string* Algorithm::GetOrder() const {
@@ -111,10 +115,21 @@ void Algorithm::WritingLogic(std::shared_ptr<Node> crNode, std::shared_ptr<Node>
             if(prNode->GetParent() != nullptr)
                 GetUpdatedBoard()->SetSymbolAtPosition(prNode->GetPlayer().GetX(), prNode->GetPlayer().GetY(), GetReplacementSymbol());
 
-            WriteToFile(crNode, GetPlayer().GetSymbol());
+            WriteToFile(crNode, GetPlayer()->GetSymbol());
         }
 
     }
+}
+
+int Algorithm::GetProcessedCount() const {
+    return _processedCount;
+}
+
+void Algorithm::SetProcessedCount(int processedCount) {
+    _processedCount = processedCount;
+}
+
+Algorithm::~Algorithm() {
 }
 
 //float Algorithm::CalculateWeight(const BoardInteractiveSymbol& currentPlayer) const {

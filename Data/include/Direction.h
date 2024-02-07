@@ -9,7 +9,8 @@ enum class Direction {
     LEFT = -1,
     RIGHT = 1,
     UP = -2,
-    DOWN = 2
+    DOWN = 2,
+    STARTPOINT = 0
 };
 
 static int ConvertDirectionToInt(Direction dir)
@@ -31,6 +32,23 @@ static Direction ConvertCharToDirection(char dir)
             return Direction::UP;
         case 'D':
             return Direction::DOWN;
+        default:
+            throw "Invalid direction";
+            //on default should throw an exception
+    }
+}
+
+static char ConvertDirectionToChar(Direction dir)
+{
+    switch(dir){
+        case Direction::LEFT:
+            return 'L';
+        case Direction::RIGHT:
+            return 'R';
+        case Direction::UP:
+            return 'U';
+        case Direction::DOWN:
+            return 'D';
         default:
             throw "Invalid direction";
             //on default should throw an exception

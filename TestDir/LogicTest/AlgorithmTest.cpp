@@ -5,29 +5,33 @@
 #include "gtest/gtest.h"
 #include "Logic/include/Algorithms/Dijkstra.h"
 #include "Data/include/DataManager.h"
-#include "include/JsonReader.h"
+#include "Data/include/FileHandlers/JsonReader.h"
+#include "Data/include/FileHandlers/TxtWriter.h"
 
 class DijkstraFixture : public ::testing::Test
 {
 protected:
     DataManager* dm;
     Reader* reader;
+    Writer* writer;
     Algorithm* dijkstra;
 
     void SetUp() override
     {
-        reader = new JsonReader("config.json");
-        dm = new DataManager(*reader);
+        reader = new JsonReader("res/config.json");
+        writer = new TxtWriter("Stats/test");
+        dm = new DataManager(*reader, *writer);
 
-        dijkstra = new Dijkstra(dm->GetPlayer(), dm->GetBoard(), dm->GetReader().GetOrder(),
-                                dm->GetReader().GetBlockingSymbols(), dm->GetEndPoint());
+        std::function<void(std::string)> doNothing;
+
+        dijkstra = new Dijkstra(dm->GetPlayer(), dm->GetBoard(), dm->GetEndPoint(),
+                                *reader, doNothing);
     }
 
     void TearDown() override
     {
-        free(reader);
-        free(dm);
-        free(dijkstra);
+        delete dm;
+        delete dijkstra;
     }
 };
 

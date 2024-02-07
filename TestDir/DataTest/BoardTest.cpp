@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "include/Board.h"
+#include "Data/include/Board/Board.h"
 
 class BoardFixture : public ::testing::Test
 {
@@ -23,8 +23,8 @@ protected:
     }
 
     void TearDown() override {
-        free(board);
-        free(boardTemplate);
+        delete board;
+        delete boardTemplate;
     }
 };
 

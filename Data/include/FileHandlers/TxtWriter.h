@@ -13,7 +13,8 @@ public:
     ~TxtWriter() override = default;
 
     void ToQueue(std::string) override;
-    void ToFile() override;
+    void WriteAll() override;
+    void WriteAsync() override;
 
 };
 

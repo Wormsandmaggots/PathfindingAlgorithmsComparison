@@ -1,0 +1,9 @@
+{
+  "path" : "res/Labs/Labyrinth6.txt",
+  "exit_symbol" : "E",
+  "player_symbol" : "P",
+  "blocking_symbols" : "*",
+  "order" : "LRUD",
+  "start_point_replacement" : "S",
+  "visited_replacement" : "."
+}

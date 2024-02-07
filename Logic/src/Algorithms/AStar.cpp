@@ -25,7 +25,7 @@ std::shared_ptr<Node> AStar::Pathfinding(std::function<float(const BoardInteract
     std::shared_ptr<Node> previousNode;
     std::unordered_map<std::string, bool> visited;
 
-    pq.push(std::make_shared<Node>(*GetInitialBoard(), 0, GetPlayer(), GetOrder(), GetBlockingSymbols(), nullptr, 0));
+    pq.push(std::make_shared<Node>(*GetInitialBoard(), 0, *GetPlayer(), GetOrder(), GetBlockingSymbols(), nullptr, 0, Direction::STARTPOINT));
 
     while(!pq.empty())
     {
@@ -38,13 +38,14 @@ std::shared_ptr<Node> AStar::Pathfinding(std::function<float(const BoardInteract
         }
 
         visited[currentState] = true;
+
         SetVisitedCount(GetVisitedCount() + 1);
 
         if (ObjectReachedEndPoint(node->GetPlayer())) {
             if(previousNode->GetParent() != nullptr)
                 GetUpdatedBoard()->SetSymbolAtPosition(previousNode->GetPlayer().GetX(), previousNode->GetPlayer().GetY(), GetReplacementSymbol());
 
-            WriteToFile(node, GetPlayer().GetSymbol());
+            WriteToFile(node, GetPlayer()->GetSymbol());
 
             return node;
         }
@@ -53,6 +54,8 @@ std::shared_ptr<Node> AStar::Pathfinding(std::function<float(const BoardInteract
         {
             std::string nextState = child->GetBoard().ToString();
             float weight = CalculateWeight(child->GetPlayer(), *GetEndPoint());
+
+            SetProcessedCount(GetProcessedCount() + 1);
 
             if (!visited[nextState]) {
                 child->SetWeight(weight);

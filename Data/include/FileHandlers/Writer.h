@@ -16,7 +16,8 @@ public:
     virtual ~Writer();
 
     virtual void ToQueue(std::string) = 0;
-    virtual void ToFile() = 0;
+    virtual void WriteAsync() = 0;
+    virtual void WriteAll() = 0;
     virtual void StopWriting();
     void ChangeToWriteFile(std::string);
     std::string GetPath() const;
@@ -27,7 +28,6 @@ public:
     bool IsThreadRunning() const;
 
 protected:
-    void SetIsQueueEmpty(bool isQueueEmpty);
     void SetThread(std::shared_ptr<std::thread>);
     std::shared_ptr<std::thread> GetThread() const;
     void SetIsRunning(bool);
@@ -38,7 +38,6 @@ private:
     std::mutex* _queueMutex;
     std::condition_variable* _queueCondition;
     std::shared_ptr<std::thread> _fileThread;
-    bool _isQueueEmpty = true;
     bool _isRunning;
 };
 

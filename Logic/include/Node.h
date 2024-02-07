@@ -11,8 +11,8 @@
 
 class Node {
 public:
-    explicit Node(Board board, float weight, BoardInteractiveSymbol player, const std::string* order, const std::string* blockingSymbols, std::shared_ptr<Node> parent, int pathLen);
-    ~Node() = default;
+    explicit Node(Board board, float weight, BoardInteractiveSymbol player, const std::string* order, const std::string* blockingSymbols, std::shared_ptr<Node> parent, int pathLen, Direction move);
+    virtual ~Node();
 
     const std::vector<Direction>& GetAvailableMoves() const;
 
@@ -23,12 +23,16 @@ public:
     const std::string* GetOrder() const;
     BoardInteractiveSymbol GetPlayer() const;
     void SetWeight(float weight);
+    Direction GetMove() const;
 
 private:
     Board _nodesBoard;
     BoardInteractiveSymbol _player;
     float _nodeWeight;
+    Direction _move;
     std::vector<Direction> _availableMoves;
+    //every node has the same _order,
+    //consider changing this
     const std::string* _order;
     std::shared_ptr<Node> _parent;
     int _pathLength = 0;
